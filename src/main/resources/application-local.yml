@@ -93,12 +93,6 @@ logging:
     #    org.hibernate.type: TRACE
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
-    # 기본 로깅 레벨
-    kr.co.zlgoon: DEBUG
-    # 매퍼 로깅 레벨 - 쿼리 정
-    kr.co.zlgoon.smilecon.cs.admin.web.mapper: DEBUG
-    # okhttp 요청 로깅 레벨
-    kr.co.zlgoon.smilecon.cs.admin.common.http.okhttp: DEBUG
 
   # 패턴
   pattern:
