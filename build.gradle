@@ -39,7 +39,8 @@ dependencies {
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
+	// Swagger
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
 	//querydsl 추가
 	implementation 'com.querydsl:querydsl-jpa'
 	//querydsl 추가
