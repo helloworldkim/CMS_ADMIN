@@ -1,0 +1,119 @@
+# =====================================================================================================================
+# Spring Boot Profile Config : local
+# =====================================================================================================================
+
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  thymeleaf:
+    prefix: classpath:templates/
+    cache: false
+
+  devtools:
+    livereload:
+      enabled: true
+
+  main:
+    banner-mode: console
+
+  # ========================================
+  # DataSource
+  # ========================================
+  datasource:
+    url: jdbc:h2:mem:cms_admin
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+    hikari:
+      # pool 에서 커넥션을 얻어오기전까지 기다리는 최대 시간 - default: 30000 (30s)
+      connection-timeout: 10000
+      # pool 에 일을 안하는 커넥션을 유지하는 시간. 이 옵션은 minimumIdle 이 maximumPoolSize 보다 작게 설정되어 있을 때만 설정 - default: 600000 (10min)
+      idle-timeout: 600000
+      # 커넥션 풀에서 살아있을 수 있는 커넥션의 최대 수명시간 - default: 1800000 (30min)
+      max-lifetime: 600000
+      # 풀에서 유지하려고 시도하는 유휴 연결 의 최소 ??수 - default: same as maximumPoolSize
+      minimum-idle: 2
+      # pool 에 유지시킬 수 있는 최대 커넥션 수 - default: 10
+      maximum-pool-size: 5
+
+
+
+  # ========================================
+  # JPA
+  # ========================================
+  jpa:
+    # 방언 설정
+    hibernate:
+      ddl-auto: create-drop  # 변경 금지!!
+    properties:
+      hibernate:
+        #      show_sql: true # sout 으로 출력하기에 바람직하지 않음
+        format_sql: true
+        default_batch_fetch_size: 500
+
+#
+server:
+  error:
+    include-binding-errors: never
+    include-message: never
+    include-stacktrace: never
+    include-exception: false
+
+# =====================================================================================================================
+# project
+# =====================================================================================================================
+
+project:
+  system:
+    admin-site-url: http://localhost:8080
+
+
+# =====================================================================================================================
+# logging
+# =====================================================================================================================
+
+logging:
+  level:
+    org.springframework.jdbc: DEBUG
+    org.springframework.jdbc.datasource.DataSourceTransactionManager: TRACE
+    org.springframework.transaction: TRACE
+    org.springframework.orm.jpa: DEBUG
+    org.springframework.orm.jpa.JpaTransactionManager: DEBUG
+
+    # hikari
+    com.zaxxer.hikari: TRACE
+
+    # hibernate
+    org.hibernate.engine.transaction.internal.TransactionImpl: DEBUG
+    org.hibernate.resource.transaction: DEBUG
+    org.hibernate.SQL: DEBUG
+    #    org.hibernate.type: TRACE
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+    # 기본 로깅 레벨
+    kr.co.zlgoon: DEBUG
+    # 매퍼 로깅 레벨 - 쿼리 정
+    kr.co.zlgoon.smilecon.cs.admin.web.mapper: DEBUG
+    # okhttp 요청 로깅 레벨
+    kr.co.zlgoon.smilecon.cs.admin.common.http.okhttp: DEBUG
+
+  # 패턴
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%5.5p) [%15.15t] [%clr(%-36.36X{REQ_TRACE_ID}){magenta}] --- %clr(%-40.40logger{39}){cyan} : %m%n%throwable"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} %5.5p [%15.15t] [%-36.36X{REQ_TRACE_ID}] --- %-40.40logger{39} : %m%n%throwable"
+  # 파일
+  file:
+    path: logs
+    name: ${logging.file.path}/output.log
+  logback:
+    rollingpolicy:
+      # 롤링
+      max-history: 30
+      max-file-size: 100MB
+      file-name-pattern: ${logging.file.path}/output_%d{yyyyMMdd}_%i.log
+  charset:
+    file: UTF-8
+    console: UTF-8

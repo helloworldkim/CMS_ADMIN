@@ -1,29 +1,37 @@
+# =====================================================================================================================
+# Spring Boot Profile Group Config
+# =====================================================================================================================
+
 spring:
   profiles:
     active:
       - local
-  datasource:
-    url: jdbc:h2:mem:cms_admin
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-  h2:
-    console:
-      enabled: true
 
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        #        show_sql: true
-        format_sql: true
-        dialect: org.hibernate.dialect.H2Dialect
-        default_batch_fetch_size: 100
+# =====================================================================================================================
+# project
+# =====================================================================================================================
 
+project:
+  name-kor: CMS???
+  name: CMS
+  service: CMD_ADMIN
+  alias: ${project.service}-admin
 
+  # project.system
+  system:
+    # ?? ?? url prefix (?? path ??) - ??? ? ?? ?? ?? ??
+    admin-permit-all-url:
+      - /login
+      - /logout
+    # ?? ?? ?? url - ??? ??? ??? ??? ??? ?? ??
+    admin-permit-auth-url:
+      - /main
+      - /common/file/.*
+    # /api ? ???? url - ??? ? ?? ??
+    upload-path:
 
-logging:
-  level:
-    org.hibernate.SQL : debug
-    org.hibernate.type : trace
+  # project.http
+  http:
+    # connection pool ??, Second ??
+    max-idle-connections: 5
+    keep-alive-duration: 60
