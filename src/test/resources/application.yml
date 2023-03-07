@@ -1,22 +1,22 @@
 # =====================================================================================================================
-# Spring Boot Profile Config : dev
+# Spring Boot Profile Config : local
 # =====================================================================================================================
 
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: test
 
   thymeleaf:
     prefix: classpath:templates/
-#    cache: false
+    cache: false
 
   devtools:
     livereload:
       enabled: true
 
   main:
-    banner-mode: log
+    banner-mode: console
 
   # ========================================
   # DataSource
@@ -37,7 +37,8 @@ spring:
       # 풀에서 유지하려고 시도하는 유휴 연결 의 최소 ??수 - default: same as maximumPoolSize
       minimum-idle: 2
       # pool 에 유지시킬 수 있는 최대 커넥션 수 - default: 10
-      maximum-pool-size: 10
+      maximum-pool-size: 5
+
 
 
   # ========================================
@@ -46,9 +47,10 @@ spring:
   jpa:
     # 방언 설정
     hibernate:
-      ddl-auto: none  # 절대 변경 금지!!
+      ddl-auto: create-drop  # 변경 금지!!
     properties:
       hibernate:
+        #      show_sql: true # sout 으로 출력하기에 바람직하지 않음
         format_sql: true
         default_batch_fetch_size: 500
 
@@ -68,17 +70,27 @@ project:
   system:
     admin-site-url: http://localhost:8080
 
+
 # =====================================================================================================================
 # logging
 # =====================================================================================================================
 
 logging:
   level:
+    org.springframework.jdbc: DEBUG
+    org.springframework.jdbc.datasource.DataSourceTransactionManager: TRACE
+    org.springframework.transaction: TRACE
+    org.springframework.orm.jpa: DEBUG
     org.springframework.orm.jpa.JpaTransactionManager: DEBUG
 
+    # hikari
+    com.zaxxer.hikari: TRACE
 
     # hibernate
+    org.hibernate.engine.transaction.internal.TransactionImpl: DEBUG
+    org.hibernate.resource.transaction: DEBUG
     org.hibernate.SQL: DEBUG
+    #    org.hibernate.type: TRACE
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
 

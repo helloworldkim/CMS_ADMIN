@@ -3,12 +3,15 @@ package com.example.cms.domain.admin.service;
 import com.example.cms.domain.admin.emun.AdminRole;
 import com.example.cms.domain.admin.entity.Admin;
 import com.example.cms.domain.admin.repository.AdminRepository;
+import com.example.cms.system.config.QueryDslConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.context.ActiveProfiles;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,6 +21,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
 @DataJpaTest
+@Import(QueryDslConfig.class)
+@ActiveProfiles("test")
 class AdminServiceTest {
 
     @Autowired

@@ -14,11 +14,9 @@ import java.util.stream.Collectors;
 public class MenuResDTO {
 
     private Long id;
-
     private String name;
-
     private Long parentId;
-
+    private String pathUrl;
     private int listOrder;
 
     private List<MenuResDTO> children;
@@ -27,8 +25,9 @@ public class MenuResDTO {
         this.id = menu.getId();
         this.name = menu.getName();
         this.parentId = menu.getParent() != null ? menu.getParent().getId() : null;
+        this.pathUrl = menu.getPathUrl() != null ? menu.getPathUrl() : "";
         this.listOrder = menu.getListOrder();
-        this.children = menu.getChildren().stream().map(MenuResDTO::new).collect(Collectors.toList());
+        this.children = menu.getChildren().stream().map(MenuResDTO::new).toList();
     }
 
 }
