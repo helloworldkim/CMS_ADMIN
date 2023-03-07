@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko" th:fragment="fragment-top" xmlns:th="http://www.thymeleaf.org">
+
+
+<div class="gnb">
+    <div class="w1280">
+        <ul>
+            <li>
+                <i class="fas fa-user" style="color: #fff; font-size: 12px"></i><span th:text="${' '}"/>
+            </li>
+            <li>
+                <i th:href="@{/auth/logout}" class="fas fa-sign-out" style="color: #fff; font-size: 12px"></i> <a th:href="@{/logout}" th:text="로그아웃"> 로그아웃</a>
+            </li>
+        </ul>
+    </div>
+</div>
+</html>
