@@ -1,11 +1,9 @@
 package com.example.cms.domain.menu.entity;
 
-import com.mysema.commons.lang.Assert;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -27,7 +25,7 @@ public class Menu {
     private String name;
     private String pathUrl;
     private int listOrder;
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Menu> children = new ArrayList<>();
 
     public void setParent(Menu parent) {

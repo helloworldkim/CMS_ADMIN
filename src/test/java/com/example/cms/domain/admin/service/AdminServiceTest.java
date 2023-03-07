@@ -3,7 +3,11 @@ package com.example.cms.domain.admin.service;
 import com.example.cms.domain.admin.emun.AdminRole;
 import com.example.cms.domain.admin.entity.Admin;
 import com.example.cms.domain.admin.repository.AdminRepository;
+import com.example.cms.domain.admingroup.entity.AdminGroup;
+import com.example.cms.domain.admingroup.enums.AdminMainAccessType;
+import com.example.cms.domain.admingroup.repository.AdminGroupRepository;
 import com.example.cms.system.config.QueryDslConfig;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +31,26 @@ class AdminServiceTest {
 
     @Autowired
     AdminRepository adminRepository;
+    @Autowired
+    AdminGroupRepository adminGroupRepository;
     @PersistenceContext
     EntityManager em;
+
+    private AdminGroup initAdminGroup;
+
+    /**
+     * 어드민은 모두 어드민 그룹을 기본적으로 가지고 있어야 한다.
+     */
+    @BeforeEach
+    void setUp() {
+        AdminGroup adminGroup = AdminGroup.builder()
+                .name("테스트 그룹")
+                .description("어드민그룹 기본셋팅")
+                .accessType(AdminMainAccessType.MAIN)
+                .build();
+        this.initAdminGroup = adminGroupRepository.save(adminGroup);
+        em.flush();
+    }
 
     @Test
     @DisplayName("회원등록 테스트")
@@ -39,6 +61,7 @@ class AdminServiceTest {
                 .password("test")
                 .adminName("테스트유저")
                 .adminRole(AdminRole.ROLE_MASTER)
+                .adminGroup(initAdminGroup)
                 .build();
         //when
         Admin savedAdmin = adminRepository.save(admin);
@@ -55,6 +78,7 @@ class AdminServiceTest {
                 .password("test")
                 .adminName("테스트유저")
                 .adminRole(AdminRole.ROLE_MASTER)
+                .adminGroup(initAdminGroup)
                 .build();
         Admin savedAdmin = adminRepository.save(admin);
         Long id = savedAdmin.getId();
@@ -77,6 +101,7 @@ class AdminServiceTest {
                 .password("test")
                 .adminName("테스트유저")
                 .adminRole(AdminRole.ROLE_MASTER)
+                .adminGroup(initAdminGroup)
                 .build();
         adminRepository.save(admin);
 
@@ -96,6 +121,7 @@ class AdminServiceTest {
                 .password("test")
                 .adminName("테스트유저")
                 .adminRole(AdminRole.ROLE_MASTER)
+                .adminGroup(initAdminGroup)
                 .build();
         adminRepository.save(admin);
 
@@ -114,6 +140,7 @@ class AdminServiceTest {
                 .password("test1")
                 .adminName("테스트유저1")
                 .adminRole(AdminRole.ROLE_MASTER)
+                .adminGroup(initAdminGroup)
                 .build();
         adminRepository.save(admin1);
 
@@ -122,6 +149,7 @@ class AdminServiceTest {
                 .password("test2")
                 .adminName("테스트유저2")
                 .adminRole(AdminRole.ROLE_MASTER)
+                .adminGroup(initAdminGroup)
                 .build();
         adminRepository.save(admin2);
 
