@@ -1,7 +1,7 @@
 package com.example.cms.domain.admingroup.service;
 
 import com.example.cms.domain.admingroup.entity.AdminGroup;
-import com.example.cms.domain.admingroup.enums.AdminMainAccessType;
+import com.example.cms.system.enums.AdminMainAccessType;
 import com.example.cms.domain.admingroup.repository.AdminGroupRepository;
 import com.example.cms.system.config.QueryDslConfig;
 import org.junit.jupiter.api.DisplayName;
@@ -60,7 +60,7 @@ class AdminGroupServiceTest {
         AdminGroup saveAdminGroup = adminGroupRepository.save(adminGroup);
 
         //when
-        AdminGroup findAdminGroup = adminGroupRepository.findById(saveAdminGroup.getAdminGroupId()).orElseThrow();
+        AdminGroup findAdminGroup = adminGroupRepository.findById(saveAdminGroup.getId()).orElseThrow();
 
         //then
         assertThat(findAdminGroup).isEqualTo(saveAdminGroup);
@@ -76,9 +76,9 @@ class AdminGroupServiceTest {
                 .accessType(AdminMainAccessType.MAIN)
                 .build();
         AdminGroup saveAdminGroup = adminGroupRepository.save(adminGroup);
-        Long adminGroupId = saveAdminGroup.getAdminGroupId();
+        Long adminGroupId = saveAdminGroup.getId();
         //when
-        adminGroupRepository.deleteById(saveAdminGroup.getAdminGroupId());
+        adminGroupRepository.deleteById(saveAdminGroup.getId());
         em.flush();
 
         //then

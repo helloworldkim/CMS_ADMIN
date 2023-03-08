@@ -1,40 +1,38 @@
 package com.example.cms.domain.admin.service;
 
-import com.example.cms.domain.admin.emun.AdminRole;
+import com.example.cms.system.enums.AdminRole;
 import com.example.cms.domain.admin.entity.Admin;
 import com.example.cms.domain.admin.repository.AdminRepository;
 import com.example.cms.domain.admingroup.entity.AdminGroup;
-import com.example.cms.domain.admingroup.enums.AdminMainAccessType;
+import com.example.cms.system.enums.AdminMainAccessType;
 import com.example.cms.domain.admingroup.repository.AdminGroupRepository;
 import com.example.cms.system.config.QueryDslConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 
-@DataJpaTest
+@SpringBootTest
 @Import(QueryDslConfig.class)
 @ActiveProfiles("test")
+@Transactional
 class AdminServiceTest {
 
     @Autowired
     AdminRepository adminRepository;
     @Autowired
+    AdminService adminService;
+    @Autowired
     AdminGroupRepository adminGroupRepository;
-    @PersistenceContext
-    EntityManager em;
 
     private AdminGroup initAdminGroup;
 
@@ -49,7 +47,6 @@ class AdminServiceTest {
                 .accessType(AdminMainAccessType.MAIN)
                 .build();
         this.initAdminGroup = adminGroupRepository.save(adminGroup);
-        em.flush();
     }
 
     @Test
@@ -64,8 +61,8 @@ class AdminServiceTest {
                 .adminGroup(initAdminGroup)
                 .build();
         //when
-        Admin savedAdmin = adminRepository.save(admin);
-
+        Long id = adminService.save(admin);
+        Admin savedAdmin = adminRepository.findById(id).orElseThrow();
         //then
         assertThat(admin).isEqualTo(savedAdmin);
     }
@@ -80,14 +77,10 @@ class AdminServiceTest {
                 .adminRole(AdminRole.ROLE_MASTER)
                 .adminGroup(initAdminGroup)
                 .build();
-        Admin savedAdmin = adminRepository.save(admin);
-        Long id = savedAdmin.getId();
-        adminRepository.deleteById(savedAdmin.getId());
-        em.flush();
-        em.clear();
+        Long id = adminService.save(admin);
         //when
+        adminService.delete(admin);
         Admin findAdmin = adminRepository.findById(id).orElseThrow();
-
         //then
         assertThat(findAdmin.isDeleted()).isTrue();
 
@@ -103,10 +96,10 @@ class AdminServiceTest {
                 .adminRole(AdminRole.ROLE_MASTER)
                 .adminGroup(initAdminGroup)
                 .build();
-        adminRepository.save(admin);
+        Long id = adminService.save(admin);
 
         //when
-        Admin findAdmin = adminRepository.findById(admin.getId()).orElseThrow();
+        Admin findAdmin = adminService.findById(id).orElseThrow();
 
         //then
         assertThat(admin).isEqualTo(findAdmin);
@@ -123,10 +116,10 @@ class AdminServiceTest {
                 .adminRole(AdminRole.ROLE_MASTER)
                 .adminGroup(initAdminGroup)
                 .build();
-        adminRepository.save(admin);
+        adminService.save(admin);
 
         //when
-        Admin findAdmin = adminRepository.findByAdminId(admin.getAdminId()).orElseThrow();
+        Admin findAdmin = adminService.findByAdminId(admin.getAdminId()).orElseThrow();
 
         //then
         assertThat(admin).isEqualTo(findAdmin);
@@ -142,7 +135,7 @@ class AdminServiceTest {
                 .adminRole(AdminRole.ROLE_MASTER)
                 .adminGroup(initAdminGroup)
                 .build();
-        adminRepository.save(admin1);
+        adminService.save(admin1);
 
         Admin admin2 = Admin.builder()
                 .adminId("test2")
@@ -151,11 +144,11 @@ class AdminServiceTest {
                 .adminRole(AdminRole.ROLE_MASTER)
                 .adminGroup(initAdminGroup)
                 .build();
-        adminRepository.save(admin2);
+        adminService.save(admin2);
 
         //when
         PageRequest pageable = PageRequest.of(0,2); //0,2건
-        Page<Admin> adminList = adminRepository.findAll(pageable);
+        Page<Admin> adminList = adminService.findAllWithPage(pageable);
 
         //then
         assertThat(adminList.getContent().size()).isEqualTo(2);

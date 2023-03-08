@@ -1,4 +1,4 @@
-package com.example.cms.domain.admingroup.enums;
+package com.example.cms.system.enums;
 
 /**
  * 최초 로그인시 진입경로

@@ -1,13 +1,7 @@
 package com.example.cms.domain.authadmin.dto;
 
-import com.example.cms.domain.admingroup.enums.AdminMainAccessType;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
-import java.util.List;
-import java.util.Map;
+import com.example.cms.system.enums.AdminMainAccessType;
+import lombok.*;
 
 @NoArgsConstructor
 @Getter
@@ -32,18 +26,7 @@ public class AuthAdminDTO {
      * 계정 ID
      */
     private String adminId;
-    /**
-     * 계정 고유번호
-     */
-    private String adminKey;
-    /**
-     * 비밀번호
-     */
-    private String pwd;
-    /**
-     * 관리자 그룹 순번 - update 시 필수
-     */
-    private Integer adminGroupSeq;
+    private Long adminGroupId;
     /**
      * 이름 - update 시 필수
      */
@@ -52,4 +35,15 @@ public class AuthAdminDTO {
      * 이메일
      */
     private String email;
+
+    @Builder
+    public AuthAdminDTO(String adminGroupName, String homeUrl, AdminMainAccessType adminMainAccessType, String adminId, Long adminGroupId, String adminName, String email) {
+        this.adminGroupName = adminGroupName;
+        this.homeUrl = homeUrl;
+        this.adminMainAccessType = adminMainAccessType;
+        this.adminId = adminId;
+        this.adminGroupId = adminGroupId;
+        this.adminName = adminName;
+        this.email = email;
+    }
 }

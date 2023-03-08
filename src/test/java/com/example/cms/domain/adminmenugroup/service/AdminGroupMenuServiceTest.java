@@ -1,7 +1,7 @@
 package com.example.cms.domain.adminmenugroup.service;
 
 import com.example.cms.domain.admingroup.entity.AdminGroup;
-import com.example.cms.domain.admingroup.enums.AdminMainAccessType;
+import com.example.cms.system.enums.AdminMainAccessType;
 import com.example.cms.domain.admingroup.repository.AdminGroupRepository;
 import com.example.cms.domain.adminmenugroup.entity.AdminGroupMenu;
 import com.example.cms.domain.adminmenugroup.repository.AdminGroupMenuRepository;
@@ -41,9 +41,6 @@ class AdminGroupMenuServiceTest {
     private List<Menu> menuList;
     @BeforeEach
     void setUp() {
-        /**
-         * 어드민 그룹
-         */
         AdminGroup adminGroup = AdminGroup.builder()
                 .name("테스트 그룹")
                 .description("어드민그룹 기본셋팅")
@@ -52,9 +49,6 @@ class AdminGroupMenuServiceTest {
 
         this.initAdminGroup = adminGroupRepository.save(adminGroup);
 
-        /**
-         * 메뉴리스트
-          */
         Menu menu1 = Menu.builder()
                 .name("1번메뉴")
                 .listOrder(1)
@@ -68,7 +62,7 @@ class AdminGroupMenuServiceTest {
         em.flush();
         //when
         menu2.setParent(saveMenu1);
-        Menu saveMenu2 = menuRepository.save(menu2);
+        menuRepository.save(menu2);
         em.flush();
         this.menuList = menuRepository.findAll(Sort.by(Sort.Direction.ASC, "listOrder"));
     }
@@ -80,7 +74,7 @@ class AdminGroupMenuServiceTest {
 
         //given
         List<AdminGroupMenu> adminGroupMenuList = new ArrayList<>();
-        menuList.stream().forEach(menu -> {
+        menuList.forEach(menu -> {
             adminGroupMenuList.add(AdminGroupMenu.builder().adminGroup(initAdminGroup).menu(menu).build());
         } );
 
@@ -100,7 +94,7 @@ class AdminGroupMenuServiceTest {
 
         //given
         List<AdminGroupMenu> adminGroupMenuList = new ArrayList<>();
-        menuList.stream().forEach(menu -> {
+        menuList.forEach(menu -> {
             adminGroupMenuList.add(AdminGroupMenu.builder().adminGroup(initAdminGroup).menu(menu).build());
         } );
 

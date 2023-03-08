@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.security.auth.login.AccountNotFoundException;
 import javax.security.auth.login.CredentialNotFoundException;
 import javax.security.auth.login.LoginException;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,11 +26,11 @@ public class AdminService {
     public Long save(Admin admin) {
         return adminRepository.save(admin).getId();
     }
-    public Admin findById(Long id) {
-        return adminRepository.findById(id).orElseThrow();
+    public Optional<Admin> findById(Long id) {
+        return adminRepository.findById(id);
     }
-    public Admin findByAdminId(String adminId) {
-        return adminRepository.findByAdminId(adminId).orElseThrow();
+    public Optional<Admin> findByAdminId(String adminId) {
+        return adminRepository.findByAdminId(adminId);
     }
 
     public Page<Admin> findAllWithPage(Pageable pageable) {
@@ -37,24 +38,24 @@ public class AdminService {
     }
     @Transactional
     public void delete(Admin admin) {
-        adminRepository.delete(admin);
+        admin.adminDelete();
     }
 
     /**
      * 로그인 처리
-     * @param adminId
-     * @param pwd
-     * @return
-     * @throws LoginException
+     * @param adminId 아이디
+     * @param password 비밀번호
+     * @return AuthAdminDTO
+     * @throws CredentialNotFoundException, AccountNotFoundException
      */
-    public AuthAdminDTO loginProcess(String adminId, String pwd) throws CredentialNotFoundException, AccountNotFoundException {
+    public AuthAdminDTO loginProcess(String adminId, String password) throws CredentialNotFoundException, AccountNotFoundException {
 
-        var admin = adminRepository.findByAdminId(adminId).orElseThrow(() -> new AccountNotFoundException("일치하는 계정 정보가 없습니다."));
+        Admin admin = adminRepository.findByAdminId(adminId).orElseThrow(() -> new AccountNotFoundException("일치하는 계정 정보가 없습니다."));
 
-        if (!passwordEncoder.matches(pwd, admin.getPassword())) {
+        if (!passwordEncoder.matches(password, admin.getPassword())) {
             throw new CredentialNotFoundException("비밀번호가 일치하지 않습니다.");
         }
 
-        return new AuthAdminDTO();
+        return admin.toAuthAdminDTO();
     }
 }

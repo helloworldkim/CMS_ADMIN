@@ -1,4 +1,4 @@
-package com.example.cms.domain.admin.emun;
+package com.example.cms.system.enums;
 
 public enum AdminRole {
     //시스템 계정, 일반 관리자, 부 관리자

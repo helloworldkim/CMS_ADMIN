@@ -1,13 +1,13 @@
 package com.example.cms.domain.admin.entity;
 
-import com.example.cms.domain.admin.emun.AdminRole;
+import com.example.cms.system.enums.AdminRole;
 import com.example.cms.domain.admingroup.entity.AdminGroup;
+import com.example.cms.domain.authadmin.dto.AuthAdminDTO;
 import com.example.cms.domain.common.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -15,7 +15,6 @@ import java.util.Objects;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE Admin SET deleted = true WHERE id = ?")
 public class Admin extends BaseEntity {
 
     @Id
@@ -44,5 +43,22 @@ public class Admin extends BaseEntity {
         this.adminName = Objects.requireNonNull(adminName);
         this.email = email;
         this.deleted = deleted;
+    }
+
+    public void adminDelete() {
+        this.deleted = Boolean.TRUE;
+    }
+    public void adminActive() {
+        this.deleted = Boolean.FALSE;
+    }
+
+    public AuthAdminDTO toAuthAdminDTO() {
+        return AuthAdminDTO.builder()
+                .adminGroupName(adminGroup.getName())
+                .adminGroupId(adminGroup.getId())
+                .adminId(adminId)
+                .adminMainAccessType(adminGroup.getAccessType())
+                .email(email)
+                .build();
     }
 }

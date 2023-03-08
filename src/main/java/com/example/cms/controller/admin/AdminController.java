@@ -5,7 +5,6 @@ import com.example.cms.domain.authadmin.dto.AuthAdminDTO;
 import com.example.cms.system.util.MessageUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,9 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.security.auth.login.AccountNotFoundException;
 import javax.security.auth.login.CredentialNotFoundException;
-import javax.security.auth.login.LoginException;
 
-import java.util.Locale;
 
 import static com.example.cms.system.constant.GlobalConst.SESSION_LOGIN_INFO;
 import static com.example.cms.system.util.HttpServletUtil.*;
@@ -34,7 +31,7 @@ public class AdminController {
     private final MessageUtil messageUtil;
     /**
      * 로그인 Form
-     * @return
+     * @return admin/loginForm
      */
     @GetMapping("/login")
     public String loginForm(@ModelAttribute("loginForm") LoginForm loginForm) {
@@ -51,8 +48,7 @@ public class AdminController {
     @PostMapping("/login")
     public String login(@Validated @ModelAttribute("loginForm") LoginForm loginForm,
                         BindingResult bindingResult,
-                        @RequestParam(defaultValue = "/") String redirectURL,
-                        Model model) {
+                        @RequestParam(defaultValue = "/") String redirectURL) {
 
 
         log.debug("==> loginForm={}", loginForm);
@@ -60,9 +56,9 @@ public class AdminController {
             log.debug("==> bindingResult = {}", bindingResult);
             return "admin/loginForm";
         }
-        AuthAdminDTO login = null;
+        AuthAdminDTO authAdminDTO = null;
         try {
-            login = adminService.loginProcess(loginForm.getAdminId(), loginForm.getPassword());
+            authAdminDTO = adminService.loginProcess(loginForm.getAdminId(), loginForm.getPassword());
         } catch (AccountNotFoundException e) {
                 bindingResult.rejectValue("adminId", messageUtil.getMessage("message.auth.login.id"));
                 return "admin/loginForm";
@@ -75,13 +71,13 @@ public class AdminController {
         // ============================================================================================================
         // 로그인 성공
         // ============================================================================================================
-        createSession(SESSION_LOGIN_INFO, login);
+        createSession(SESSION_LOGIN_INFO, authAdminDTO);
 
         return "redirect:" + redirectURL;
     }
     /**
      * 로그아웃 수행
-     * @return
+     * @return /login 페이지
      */
     @GetMapping("/logout")
     public String logout() {

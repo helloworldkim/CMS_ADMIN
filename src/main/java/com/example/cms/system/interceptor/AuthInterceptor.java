@@ -149,8 +149,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         if (session != null && session.getAttribute(SESSION_LOGIN_INFO) != null) {
             AuthAdminDTO authDTO = (AuthAdminDTO) session.getAttribute(SESSION_LOGIN_INFO);
 
-            log.info("# ==> [로그인 정보] adminId={} , adminName={} , adminGroupSeq={}",
-                    authDTO.getAdminId(), authDTO.getAdminName(), authDTO.getAdminGroupSeq());
+            log.info("# ==> [로그인 정보] adminId={} , adminName={} , adminGroupId={}", authDTO.getAdminId(), authDTO.getAdminName(), authDTO.getAdminGroupId());
 
             // 로그인 id 를 MDC 에 저장
             MDC.put(REQUEST_ACCESS_ID, authDTO.getAdminId());
@@ -166,8 +165,7 @@ public class AuthInterceptor implements HandlerInterceptor {
      * @return
      */
     private boolean isAdminPermitAuthUrl(String requestURI) {
-        return projectProperties.getSystem().getAdminPermitAuthUrl().stream()
-                .anyMatch(url -> StringUtils.startsWith(requestURI, url));
+        return projectProperties.getSystem().getAdminPermitAuthUrl().stream().anyMatch(url -> StringUtils.startsWith(requestURI, url));
     }
 
     /**
@@ -176,8 +174,7 @@ public class AuthInterceptor implements HandlerInterceptor {
      * @return
      */
     private boolean isAdminPermitAllUrl(String requestURI) {
-        return projectProperties.getSystem().getAdminPermitAllUrl().stream()
-                .anyMatch(url -> StringUtils.startsWith(requestURI, url));
+        return projectProperties.getSystem().getAdminPermitAllUrl().stream().anyMatch(url -> StringUtils.startsWith(requestURI, url));
     }
 
 }
