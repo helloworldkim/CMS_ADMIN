@@ -3,17 +3,13 @@
 # =====================================================================================================================
 
 spring:
-  config:
-    activate:
-      on-profile: test
+  profiles:
+    active:
+      - test
 
   thymeleaf:
     prefix: classpath:templates/
     cache: false
-
-  devtools:
-    livereload:
-      enabled: true
 
   main:
     banner-mode: console

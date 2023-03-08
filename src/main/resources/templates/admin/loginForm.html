@@ -43,23 +43,27 @@
                                     </div>
                                     <form class="user" name="formLogin" id="formLogin" th:object="${loginForm}" action="/login" method="post">
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-user"
-                                                placeholder="아이디를 입력하세요">
+                                            <input type="text"
+                                                   class="form-control form-control-user"
+                                                   th:field="*{adminId}"
+                                                   placeholder="아이디를 입력하세요"
+                                                   th:errorclass="field-error">
+                                            <div class="field-error pl20" th:errors="*{adminId}"></div>
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password">
+                                            <input type="password"
+                                                   class="form-control form-control-user"
+                                                   th:field="*{password}"
+                                                   placeholder="비밀번호">
+                                            <div class="field-error pl20" th:errors="*{password}"></div>
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
                                                 <input type="checkbox" class="custom-control-input" id="customCheck">
-                                                <label class="custom-control-label" for="customCheck">Remember
-                                                    Me</label>
+                                                <label class="custom-control-label" for="customCheck">Remember Me</label>
                                             </div>
                                         </div>
-                                        <button class="btn btn-primary btn-user btn-block">
-                                            Login
-                                        </button>
+                                        <button class="btn btn-primary btn-user btn-block">Login</button>
                                         <hr>
                                         <a href="../index.html" class="btn btn-google btn-user btn-block">
                                             <i class="fab fa-google fa-fw"></i> Login with Google

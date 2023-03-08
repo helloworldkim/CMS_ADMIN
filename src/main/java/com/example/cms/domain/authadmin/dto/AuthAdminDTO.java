@@ -1,5 +1,6 @@
 package com.example.cms.domain.authadmin.dto;
 
+import com.example.cms.domain.admingroup.enums.AdminMainAccessType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +16,7 @@ import java.util.Map;
 public class AuthAdminDTO {
 
     // 관리자 그룹명
-    private String                               adminGroupName;
+    private String adminGroupName;
     // 메인 메뉴 목록
 //    private List<AdminMenuResVO> mainMenuList;
     // 서브 메뉴 목록
@@ -23,32 +24,32 @@ public class AuthAdminDTO {
     // 권한 정보
 //    private Map<String, AdminMenuResVO>        authMap;
     // HOME URL
-    private String                               homeUrl;
+    private String homeUrl;
     // 메인 최초 접속 여부
-    private String                               mainFirstAccessYn;
+    private AdminMainAccessType adminMainAccessType;
 
     /**
      * 계정 ID
      */
-    private String        adminId;
+    private String adminId;
     /**
      * 계정 고유번호
      */
-    private String        adminKey;
+    private String adminKey;
     /**
      * 비밀번호
      */
-    private String        pwd;
+    private String pwd;
     /**
      * 관리자 그룹 순번 - update 시 필수
      */
-    private Integer       adminGroupSeq;
+    private Integer adminGroupSeq;
     /**
      * 이름 - update 시 필수
      */
-    private String        adminName;
+    private String adminName;
     /**
      * 이메일
      */
-    private String        email;
+    private String email;
 }

@@ -40,7 +40,14 @@ public class AdminService {
         adminRepository.delete(admin);
     }
 
-    public AuthAdminDTO login(String adminId, String pwd) throws LoginException {
+    /**
+     * 로그인 처리
+     * @param adminId
+     * @param pwd
+     * @return
+     * @throws LoginException
+     */
+    public AuthAdminDTO loginProcess(String adminId, String pwd) throws CredentialNotFoundException, AccountNotFoundException {
 
         var admin = adminRepository.findByAdminId(adminId).orElseThrow(() -> new AccountNotFoundException("일치하는 계정 정보가 없습니다."));
 
