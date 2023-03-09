@@ -27,13 +27,14 @@ public class WebConfig implements WebMvcConfigurer {
         List<String> interceptorExcludeList = Arrays.asList(
                                                             "/css/**",
                                                             "/js/**",
-                                                            "/images/**",
+                                                            "/img/**",
+                                                            "/scss/**",
+                                                            "/vendor/**",
                                                             "/error/**",
                                                             "/download/**",
                                                             "/common/file**",
                                                             "/h2-console/**",
                                                             "/*.ico");
-
         registry.addInterceptor(infoInterceptor)
                 .order(1)
                 .excludePathPatterns(interceptorExcludeList)

@@ -57,7 +57,7 @@ class AdminGroupMenuServiceTest {
         Menu menu2 = Menu.builder()
                 .name("1번메뉴")
                 .listOrder(2)
-                .pathUrl("/abc/test")
+                .url("/abc/test")
                 .build();
         em.flush();
         //when

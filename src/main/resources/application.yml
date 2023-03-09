@@ -48,7 +48,7 @@ spring:
   jpa:
     # 방언 설정
     hibernate:
-      ddl-auto: create-drop  # 변경 금지!!
+      ddl-auto: none  # 변경 금지!!
     properties:
       hibernate:
         #      show_sql: true # sout 으로 출력하기에 바람직하지 않음

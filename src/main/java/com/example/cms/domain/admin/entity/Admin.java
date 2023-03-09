@@ -1,9 +1,9 @@
 package com.example.cms.domain.admin.entity;
 
-import com.example.cms.system.enums.AdminRole;
 import com.example.cms.domain.admingroup.entity.AdminGroup;
 import com.example.cms.domain.authadmin.dto.AuthAdminDTO;
 import com.example.cms.domain.common.BaseEntity;
+import com.example.cms.system.enums.AdminRole;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -51,6 +51,10 @@ public class Admin extends BaseEntity {
     public void adminActive() {
         this.deleted = Boolean.FALSE;
     }
+    public void encodePassword(String encodePassword) {
+        this.password = password;
+
+    }
 
     public AuthAdminDTO toAuthAdminDTO() {
         return AuthAdminDTO.builder()
@@ -59,6 +63,7 @@ public class Admin extends BaseEntity {
                 .adminId(adminId)
                 .adminMainAccessType(adminGroup.getAccessType())
                 .email(email)
+                .homeUrl("/")
                 .build();
     }
 }

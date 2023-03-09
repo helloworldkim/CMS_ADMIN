@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AdminGroupMenuRepository extends JpaRepository<AdminGroupMenu, Long> {
-    List<AdminGroupMenu> findByAdminGroup(AdminGroup initAdminGroup);
+public interface AdminGroupMenuRepository extends JpaRepository<AdminGroupMenu, Long>, AdminGroupMenuCustomRepositroy {
+    List<AdminGroupMenu> findByAdminGroup(AdminGroup adminGroup);
 }

@@ -2,30 +2,25 @@ package com.example.cms.domain.menu.service;
 
 import com.example.cms.domain.menu.entity.Menu;
 import com.example.cms.domain.menu.repository.MenuRepository;
-import com.example.cms.system.config.QueryDslConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@DataJpaTest
-@Import(QueryDslConfig.class)
+@SpringBootTest
 @ActiveProfiles("test")
 class MenuServiceTest {
 
-    @PersistenceContext
-    EntityManager em;
     @Autowired
     MenuRepository menuRepository;
+    @Autowired
+    MenuService menuService;
 
     @Test
     @DisplayName("최상위 메뉴 단건 저장테스트")
@@ -36,29 +31,33 @@ class MenuServiceTest {
                 .listOrder(1)
                 .build();
         //when
-        Menu saveMenu = menuRepository.save(menu1);
+        Long id = menuService.save(menu1);
+        Optional<Menu> menuOptional = menuRepository.findById(id);
 
         //then
-        assertThat(menu1).isEqualTo(saveMenu);
+        assertThat(menuOptional).isNotEmpty();
 
     }
 
     @Test
-    @DisplayName("상위메뉴가 존재한다면 PathUrl가 있어야한다. builder에서 null체크 됨")
-    void saveOneWithNoPathUrl() {
+    @DisplayName("상위메뉴가 존재한다면 url가 있어야한다. builder에서 null체크 됨")
+    void saveOneWithNoUrl() {
         //given
         Menu menu1 = Menu.builder()
                 .name("1번메뉴")
                 .listOrder(1)
                 .build();
+        menuRepository.save(menu1);
 
         //when
         //then
-        assertThrows(NullPointerException.class, () -> Menu.builder()
-                .name("1번메뉴")
-                .listOrder(2)
-                .parent(menu1)
-                .build());
+        assertThrows(IllegalArgumentException.class, () -> {
+            Menu menu2 = Menu.builder()
+                    .name("1번메뉴")
+                    .listOrder(2)
+                    .build();
+            menu2.setParent(menu1);
+        });
 
     }
 
@@ -70,20 +69,18 @@ class MenuServiceTest {
                 .name("1번메뉴")
                 .listOrder(1)
                 .build();
-        Menu saveMenu1 = menuRepository.save(menu1);
+        menuService.save(menu1);
         Menu menu2 = Menu.builder()
-                .name("1번메뉴")
-                .listOrder(2)
-                .pathUrl("/abc/test")
+                .name("1-1번메뉴")
+                .listOrder(1)
+                .url("/abc/test")
                 .build();
-        em.flush();
         //when
-        menu2.setParent(saveMenu1);
-        Menu saveMenu2 = menuRepository.save(menu2);
-        em.flush();
+        menu2.setParent(menu1);
+        menuService.save(menu2);
 
         //then
-        assertThat(saveMenu2.getParent()).isEqualTo(saveMenu1);
+        assertThat(menu2.getParent()).isEqualTo(menu1);
 
     }
 
@@ -97,10 +94,10 @@ class MenuServiceTest {
                 .build();
         //when
         Menu saveMenu = menuRepository.save(menu1);
-        Menu menu = menuRepository.findById(saveMenu.getId()).orElseThrow();
+        Optional<Menu> optionalMenu = menuService.findById(saveMenu.getId());
 
         //then
-        assertThat(menu1).isEqualTo(menu);
+        assertThat(optionalMenu).isNotEmpty();
 
     }
 
@@ -116,12 +113,12 @@ class MenuServiceTest {
         Long id = menu1.getId();
 
         //when
-        menuRepository.deleteById(menu1.getId());
-        em.flush();
-        em.clear();
+        menuService.deleteById(id);
+
 
         //then
-        assertThrows(NoSuchElementException.class, () ->menuRepository.findById(id).orElseThrow());
+        Optional<Menu> optionalMenu = menuRepository.findById(id);
+        assertThat(optionalMenu).isEmpty();
     }
 
     @Test
@@ -133,14 +130,23 @@ class MenuServiceTest {
                 .listOrder(1)
                 .build();
         Menu saveMenu = menuRepository.save(menu1);
-        Long id = menu1.getId();
+        Menu menu2 = Menu.builder()
+                .name("1-1번메뉴")
+                .listOrder(1)
+                .url("/abc/test")
+                .build();
+        menu2.setParent(menu1);
+        menuService.save(menu2);
+        Long id1 = menu1.getId();
+        Long id2 = menu2.getId();
 
         //when
-        menuRepository.deleteById(menu1.getId());
-        em.flush();
-        em.clear();
+        menuService.deleteById(id1);
+        Optional<Menu> optionalMenu1 = menuRepository.findById(id1);
+        Optional<Menu> optionalMenu2 = menuRepository.findById(id2);
 
         //then
-        assertThrows(NoSuchElementException.class, () ->menuRepository.findById(id).orElseThrow());
+        assertThat(optionalMenu1).isEmpty();
+        assertThat(optionalMenu2).isEmpty();
     }
 }

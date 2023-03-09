@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -25,7 +24,7 @@ public class MenuResDTO {
         this.id = menu.getId();
         this.name = menu.getName();
         this.parentId = menu.getParent() != null ? menu.getParent().getId() : null;
-        this.pathUrl = menu.getPathUrl() != null ? menu.getPathUrl() : "";
+        this.pathUrl = menu.getUrl() != null ? menu.getUrl() : "";
         this.listOrder = menu.getListOrder();
         this.children = menu.getChildren().stream().map(MenuResDTO::new).toList();
     }

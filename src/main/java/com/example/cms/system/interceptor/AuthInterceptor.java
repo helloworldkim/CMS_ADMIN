@@ -1,14 +1,14 @@
 package com.example.cms.system.interceptor;
 
+import com.example.cms.domain.adminmenugroup.dto.AdminGroupMenuDTO;
 import com.example.cms.domain.authadmin.dto.AuthAdminDTO;
 import com.example.cms.system.properties.ProjectProperties;
 import com.example.cms.system.util.HttpServletUtil;
+import com.example.cms.system.util.MessageUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Map;
 
 import static com.example.cms.system.constant.GlobalConst.*;
 
@@ -25,7 +26,7 @@ import static com.example.cms.system.constant.GlobalConst.*;
 @Slf4j
 public class AuthInterceptor implements HandlerInterceptor {
 
-    private final MessageSource messageSource;
+    private final MessageUtil messageUtil;
     private final ProjectProperties projectProperties;
 
     @Override
@@ -72,24 +73,30 @@ public class AuthInterceptor implements HandlerInterceptor {
             String requestURIPath = StringUtils.substring(requestURI, 0, requestURI.lastIndexOf("/") + 1);
             String referer = request.getHeader("Referer");
 
-//            AdminMenuResVO AdminMenuResDTO;
-//            Map<String, AdminMenuResVO> authMap = authAdminDTO.getAuthMap();
+            AdminGroupMenuDTO adminGroupMenuDTO;
+            Map<String, AdminGroupMenuDTO> authMap = authAdminDTO.getAuthMap();
 
-//            if (authMap != null) {
-//                csAdminMenuResDTO = authMap.get(getAuthPath(requestURI));
-//
-//                // 권한이 있으면 - 현재 메뉴 정보를 request 에 담는다, front 에서 메뉴 상태 표시에 사용
-//                if (csAdminMenuResDTO != null && StringUtils.equals(csAdminMenuResDTO.getReadAuthYn(), "Y")) {
-//                    request.setAttribute(CURRENT_MENU, csAdminMenuResDTO);
-//                    log.debug("# ==> 인증 성공");
-//                    return true;
-//                }
-//
+            if (authMap != null) {
+                //요청 주소의 접근 권한 확인
+                adminGroupMenuDTO = authMap.get(requestURIPath);
+                if (adminGroupMenuDTO == null) {
+                    log.warn("# ==> 대상 메뉴 접근 권한 없음");
+                    setAuthRedirect(referer, contextPath, request, response, authAdminDTO);
+                    throw new IllegalStateException("대상 메뉴 접근 권한 없음");
+                }
+
+                // 권한이 있으면 - 현재 메뉴 정보를 request 에 담는다, front 에서 메뉴 상태 표시에 사용
+                if (adminGroupMenuDTO.menuAccess()) {
+                    request.setAttribute(CURRENT_MENU, adminGroupMenuDTO);
+                    log.debug("# ==> 인증 성공");
+                    return true;
+                }
+
                 // 권한 오류로 인한 리다이렉트 설정
                 log.warn("# ==> 권한 오류로 인한 실패");
                 setAuthRedirect(referer, contextPath, request, response, authAdminDTO);
                 throw new IllegalStateException("권한 없음");
-//            }
+            }
 
         } catch (IllegalStateException | AuthException e) {
 
@@ -103,15 +110,14 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         }
 
-
+        return false;
     }
 
     private void setAuthRedirect(String referer, String contextPath, HttpServletRequest request,
                                  HttpServletResponse response, AuthAdminDTO authAdminDTO) throws IOException {
 
         // 메세지 생성
-        HttpServletUtil.createSession(ALERT_MSG,
-                messageSource.getMessage("message.menu.access.denied", null, LocaleContextHolder.getLocale()));
+        HttpServletUtil.createSession(ALERT_MSG, messageUtil.getMessage("message.menu.access.denied"));
 
         // 이동 할 URL
         String redirectUrl = "";
@@ -160,21 +166,21 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     /**
-     * 관리자 인증은 필요하나 권한 체크가 필요 없는 주소
-     * @param requestURI
-     * @return
-     */
-    private boolean isAdminPermitAuthUrl(String requestURI) {
-        return projectProperties.getSystem().getAdminPermitAuthUrl().stream().anyMatch(url -> StringUtils.startsWith(requestURI, url));
-    }
-
-    /**
      * 권한체크 불필요한 주소 체크
      * @param requestURI
      * @return
      */
     private boolean isAdminPermitAllUrl(String requestURI) {
         return projectProperties.getSystem().getAdminPermitAllUrl().stream().anyMatch(url -> StringUtils.startsWith(requestURI, url));
+    }
+
+    /**
+     * 관리자 인증은 필요하나 권한 체크가 필요 없는 주소
+     * @param requestURI
+     * @return
+     */
+    private boolean isAdminPermitAuthUrl(String requestURI) {
+        return projectProperties.getSystem().getAdminPermitAuthUrl().stream().anyMatch(url -> StringUtils.startsWith(requestURI, url));
     }
 
 }
