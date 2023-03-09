@@ -1,34 +1,30 @@
 package com.example.cms.domain.admingroup.service;
 
 import com.example.cms.domain.admingroup.entity.AdminGroup;
-import com.example.cms.system.enums.AdminMainAccessType;
 import com.example.cms.domain.admingroup.repository.AdminGroupRepository;
-import com.example.cms.system.config.QueryDslConfig;
+import com.example.cms.system.enums.AdminMainAccessType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@DataJpaTest
-@Import(QueryDslConfig.class)
+@SpringBootTest
 @ActiveProfiles("test")
+@Transactional
 class AdminGroupServiceTest {
 
     @Autowired
     private AdminGroupRepository adminGroupRepository;
-
-    @PersistenceContext
-    private EntityManager em;
+    @Autowired
+    private AdminGroupService adminGroupService;
 
     @Test
     @DisplayName("어드민 그룹 등록 테스트")
@@ -40,12 +36,12 @@ class AdminGroupServiceTest {
                 .accessType(AdminMainAccessType.MAIN)
                 .build();
 
-        AdminGroup saveAdminGroup = adminGroupRepository.save(adminGroup);
-
         //when
+        Long id = adminGroupService.save(adminGroup);
+        AdminGroup findAdminGroup = adminGroupRepository.findById(id).orElseThrow();
 
         //then
-        assertThat(saveAdminGroup).isEqualTo(adminGroup);
+        assertThat(findAdminGroup).isEqualTo(adminGroup);
     }
 
     @Test
@@ -60,7 +56,7 @@ class AdminGroupServiceTest {
         AdminGroup saveAdminGroup = adminGroupRepository.save(adminGroup);
 
         //when
-        AdminGroup findAdminGroup = adminGroupRepository.findById(saveAdminGroup.getId()).orElseThrow();
+        AdminGroup findAdminGroup = adminGroupService.findById(saveAdminGroup.getId()).orElseThrow();
 
         //then
         assertThat(findAdminGroup).isEqualTo(saveAdminGroup);
@@ -78,8 +74,7 @@ class AdminGroupServiceTest {
         AdminGroup saveAdminGroup = adminGroupRepository.save(adminGroup);
         Long adminGroupId = saveAdminGroup.getId();
         //when
-        adminGroupRepository.deleteById(saveAdminGroup.getId());
-        em.flush();
+        adminGroupService.deleteById(adminGroupId);
 
         //then
         assertThrows(NoSuchElementException.class, () -> adminGroupRepository.findById(adminGroupId).orElseThrow());
@@ -102,10 +97,9 @@ class AdminGroupServiceTest {
                 .accessType(AdminMainAccessType.MAIN)
                 .build();
         adminGroupRepository.save(adminGroup2);
-        em.flush();
 
         //when
-        List<AdminGroup> list = adminGroupRepository.findAll();
+        List<AdminGroup> list = adminGroupService.findAll();
 
         //then
         assertThat(list.size()).isEqualTo(2);
