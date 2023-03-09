@@ -22,7 +22,6 @@ public class AdminGroupMenuRepositoryImpl implements AdminGroupMenuCustomReposit
                 .join(adminGroupMenu.menu, menu)
                 .where(
                         adminGroupMenu.adminGroup.id.eq(adminGroupId)
-                        , menu.parent.isNull()
                         , adminGroupMenu.menuAccess.isTrue()
                 )
                 .orderBy(menu.listOrder.asc())

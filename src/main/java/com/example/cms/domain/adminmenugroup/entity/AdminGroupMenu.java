@@ -1,6 +1,7 @@
 package com.example.cms.domain.adminmenugroup.entity;
 
 import com.example.cms.domain.admingroup.entity.AdminGroup;
+import com.example.cms.domain.adminmenugroup.dto.AdminGroupMenuDTO;
 import com.example.cms.domain.common.BaseEntity;
 import com.example.cms.domain.menu.entity.Menu;
 import lombok.AccessLevel;
@@ -46,4 +47,13 @@ public class AdminGroupMenu extends BaseEntity {
         this.menuAccess = Boolean.FALSE;
     }
 
+    public AdminGroupMenuDTO toAdminGroupMenuDTO() {
+        return AdminGroupMenuDTO.builder()
+                .menuId(this.menu.getId())
+                .name(this.menu.getName())
+                .url(this.menu.getUrl())
+                .menuAccess(this.menuAccess)
+                .listOrder(this.menu.getListOrder())
+                .build();
+    }
 }

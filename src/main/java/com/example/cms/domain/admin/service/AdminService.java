@@ -2,9 +2,10 @@ package com.example.cms.domain.admin.service;
 
 import com.example.cms.domain.admin.entity.Admin;
 import com.example.cms.domain.admin.repository.AdminRepository;
+import com.example.cms.domain.adminmenugroup.dto.AdminGroupMenuDTO;
 import com.example.cms.domain.adminmenugroup.entity.AdminGroupMenu;
 import com.example.cms.domain.adminmenugroup.repository.AdminGroupMenuRepository;
-import com.example.cms.domain.authadmin.dto.AuthAdminDTO;
+import com.example.cms.domain.admin.dto.AuthAdminDTO;
 import com.example.cms.system.enums.AdminMainAccessType;
 import com.example.cms.system.util.MessageUtil;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.security.auth.login.AccountNotFoundException;
 import javax.security.auth.login.CredentialNotFoundException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -77,7 +77,7 @@ public class AdminService {
         log.debug("==> 메뉴 조회 및 세팅 시작");
 
         Long adminGroupId = admin.getAdminGroup().getId();
-        // 접속 가능한 트리메뉴 목록을 가져 온다
+        // 어드민 그룹 별 접속 가능한 전체 메뉴 목록을 가져 온다
         List<AdminGroupMenu> adminGroupAccessMenuList = adminGroupMenuRepository.findAdminGroupMenuListWithQuerydsl(adminGroupId);
 
         log.trace("==> accessMenuList={}", adminGroupAccessMenuList);
@@ -87,19 +87,74 @@ public class AdminService {
             throw new IllegalStateException("접속가능한 메뉴가 없습니다.");
         }
 
+        //기본 유저 정보
         AuthAdminDTO authAdminDTO = admin.toAuthAdminDTO();
 
+        //mainMenuList
+        List<AdminGroupMenuDTO> mainMenuList = getMainMenuList(adminGroupAccessMenuList);
+        //menuMap
+        Map<Long, AdminGroupMenuDTO> menuMap = createMenuMap(adminGroupAccessMenuList);
+        //authMap
+        Map<String, AdminGroupMenuDTO> authMap = createAuthMap(adminGroupAccessMenuList);
+
+        //서브메뉴
+        Map<Long, List<AdminGroupMenuDTO>> subMenuMap = new HashMap<>();
         for (AdminGroupMenu adminGroupMenu : adminGroupAccessMenuList) {
 
             // Home URL 셋팅
             if (StringUtils.isNotBlank(authAdminDTO.getHomeUrl())) {
                 setHomeUrl(authAdminDTO, adminGroupMenu);
             }
+            Long menuId = adminGroupMenu.getMenu().getId();
+
+            //하위 메뉴가 존재한다면 subMenuList에 값을 채워 넣는다
+            boolean empty = adminGroupMenu.getMenu().getChildren().isEmpty();
+            if (!empty) {
+                //서브메뉴 리스트 생성
+                List<AdminGroupMenuDTO> subMenuList = new ArrayList<>();
+
+                adminGroupMenu.getMenu().getChildren().forEach(menu -> {
+                    Long subMenuId = menu.getId();
+                    AdminGroupMenuDTO adminGroupMenuDTO = menuMap.get(subMenuId);
+                    subMenuList.add(adminGroupMenuDTO);
+                });
+
+                subMenuMap.put(menuId, subMenuList);
+            }
 
 
         }
-
+        authAdminDTO.setMainMenuList(mainMenuList);
+        authAdminDTO.setSubMenuMap(subMenuMap);
+        authAdminDTO.setAuthMap(authMap);
         return authAdminDTO;
+    }
+
+    private List<AdminGroupMenuDTO> getMainMenuList(List<AdminGroupMenu> adminGroupAccessMenuList) {
+        return adminGroupAccessMenuList.stream()
+                .filter(adminGroupMenu -> {
+                    return adminGroupMenu.getMenu().getParent() == null;
+                })
+                .map(AdminGroupMenu::toAdminGroupMenuDTO)
+                .toList();
+    }
+
+    private Map<Long, AdminGroupMenuDTO> createMenuMap(List<AdminGroupMenu> adminGroupAccessMenuList) {
+        Map<Long, AdminGroupMenuDTO> menuMap = new HashMap<>();
+        adminGroupAccessMenuList.forEach(adminGroupMenu -> {
+            Long menuId = adminGroupMenu.getMenu().getId();
+            menuMap.put(menuId, adminGroupMenu.toAdminGroupMenuDTO());
+        });
+        return menuMap;
+    }
+
+    private Map<String, AdminGroupMenuDTO> createAuthMap(List<AdminGroupMenu> adminGroupAccessMenuList) {
+        Map<String, AdminGroupMenuDTO> authMap = new HashMap<>();
+        adminGroupAccessMenuList.forEach(adminGroupMenu -> {
+            String url = adminGroupMenu.getMenu().getUrl();
+            authMap.put(url, adminGroupMenu.toAdminGroupMenuDTO());
+        });
+        return authMap;
     }
 
     private void setHomeUrl(AuthAdminDTO authAdminDTO, AdminGroupMenu adminGroupMenu) {

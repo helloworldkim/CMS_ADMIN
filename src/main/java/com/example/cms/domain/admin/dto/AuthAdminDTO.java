@@ -1,4 +1,4 @@
-package com.example.cms.domain.authadmin.dto;
+package com.example.cms.domain.admin.dto;
 
 import com.example.cms.domain.adminmenugroup.dto.AdminGroupMenuDTO;
 import com.example.cms.system.enums.AdminMainAccessType;
@@ -13,7 +13,7 @@ import java.util.Map;
 public class AuthAdminDTO {
     String adminGroupName;
     List<AdminGroupMenuDTO> mainMenuList;
-    Map<Integer, List<AdminGroupMenuDTO>> subMenuMap;
+    Map<Long, List<AdminGroupMenuDTO>> subMenuMap;
     Map<String, AdminGroupMenuDTO> authMap;
     String homeUrl;
     AdminMainAccessType adminMainAccessType;
@@ -22,7 +22,7 @@ public class AuthAdminDTO {
     String adminName;
     String email;
     @Builder
-    public AuthAdminDTO(String adminGroupName, List<AdminGroupMenuDTO> mainMenuList, Map<Integer, List<AdminGroupMenuDTO>> subMenuMap, Map<String, AdminGroupMenuDTO> authMap, String homeUrl, AdminMainAccessType adminMainAccessType, String adminId, Long adminGroupId, String adminName, String email) {
+    public AuthAdminDTO(String adminGroupName, List<AdminGroupMenuDTO> mainMenuList, Map<Long, List<AdminGroupMenuDTO>> subMenuMap, Map<String, AdminGroupMenuDTO> authMap, String homeUrl, AdminMainAccessType adminMainAccessType, String adminId, Long adminGroupId, String adminName, String email) {
         this.adminGroupName = adminGroupName;
         this.mainMenuList = mainMenuList;
         this.subMenuMap = subMenuMap;

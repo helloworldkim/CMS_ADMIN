@@ -1,7 +1,7 @@
 package com.example.cms.domain.admin.entity;
 
 import com.example.cms.domain.admingroup.entity.AdminGroup;
-import com.example.cms.domain.authadmin.dto.AuthAdminDTO;
+import com.example.cms.domain.admin.dto.AuthAdminDTO;
 import com.example.cms.domain.common.BaseEntity;
 import com.example.cms.system.enums.AdminRole;
 import lombok.AccessLevel;

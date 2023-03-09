@@ -1,7 +1,7 @@
 package com.example.cms.system.interceptor;
 
 import com.example.cms.domain.adminmenugroup.dto.AdminGroupMenuDTO;
-import com.example.cms.domain.authadmin.dto.AuthAdminDTO;
+import com.example.cms.domain.admin.dto.AuthAdminDTO;
 import com.example.cms.system.properties.ProjectProperties;
 import com.example.cms.system.util.HttpServletUtil;
 import com.example.cms.system.util.MessageUtil;
@@ -70,7 +70,6 @@ public class AuthInterceptor implements HandlerInterceptor {
             log.debug("# ==> 관리자 인증 및 권한 체크가 필요한 Url 요청 - {}", requestURI);
 
             String contextPath = request.getContextPath();
-            String requestURIPath = StringUtils.substring(requestURI, 0, requestURI.lastIndexOf("/") + 1);
             String referer = request.getHeader("Referer");
 
             AdminGroupMenuDTO adminGroupMenuDTO;
@@ -78,24 +77,20 @@ public class AuthInterceptor implements HandlerInterceptor {
 
             if (authMap != null) {
                 //요청 주소의 접근 권한 확인
-                adminGroupMenuDTO = authMap.get(requestURIPath);
-                if (adminGroupMenuDTO == null) {
+                adminGroupMenuDTO = authMap.get(requestURI);
+                boolean menuAccess = adminGroupMenuDTO.menuAccess();
+                if (menuAccess) {
+                    // 권한이 있으면 - 현재 메뉴 정보를 request 에 담는다, front 에서 메뉴 상태 표시에 사용
+                    request.setAttribute(CURRENT_MENU, adminGroupMenuDTO);
+                    log.debug("# ==> 인증 성공");
+                    return true;
+                } else {
                     log.warn("# ==> 대상 메뉴 접근 권한 없음");
                     setAuthRedirect(referer, contextPath, request, response, authAdminDTO);
                     throw new IllegalStateException("대상 메뉴 접근 권한 없음");
                 }
 
-                // 권한이 있으면 - 현재 메뉴 정보를 request 에 담는다, front 에서 메뉴 상태 표시에 사용
-                if (adminGroupMenuDTO.menuAccess()) {
-                    request.setAttribute(CURRENT_MENU, adminGroupMenuDTO);
-                    log.debug("# ==> 인증 성공");
-                    return true;
-                }
 
-                // 권한 오류로 인한 리다이렉트 설정
-                log.warn("# ==> 권한 오류로 인한 실패");
-                setAuthRedirect(referer, contextPath, request, response, authAdminDTO);
-                throw new IllegalStateException("권한 없음");
             }
 
         } catch (IllegalStateException | AuthException e) {

@@ -1,7 +1,7 @@
 package com.example.cms.controller.admin;
 
 import com.example.cms.domain.admin.service.AdminService;
-import com.example.cms.domain.authadmin.dto.AuthAdminDTO;
+import com.example.cms.domain.admin.dto.AuthAdminDTO;
 import com.example.cms.system.util.MessageUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
