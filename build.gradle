@@ -48,7 +48,9 @@ dependencies {
 	//querydsl 추가
 	implementation 'com.querydsl:querydsl-apt'
 	//mysql
-	runtimeOnly 'mysql:mysql-connector-java'
+	// https://mvnrepository.com/artifact/mysql/mysql-connector-java
+	implementation 'mysql:mysql-connector-java:8.0.32'
+
 }
 
 tasks.named('test') {
