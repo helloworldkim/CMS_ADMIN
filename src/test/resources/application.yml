@@ -13,6 +13,12 @@ spring:
 
   main:
     banner-mode: console
+  # ========================================
+  # Messages
+  # ========================================
+  messages:
+    basename: messages.messages, messages.common
+    encoding: UTF-8
 
   # ========================================
   # DataSource
