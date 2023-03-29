@@ -1,4 +1,4 @@
-package com.example.cms.controller.admin;
+package com.example.cms.web.controller.admin;
 
 import lombok.Getter;
 import lombok.Setter;
