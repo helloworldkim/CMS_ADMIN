@@ -1,26 +1,41 @@
 <!DOCTYPE html>
-<html th:fragment="layout (content)" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" th:fragment="layout (content)" xmlns:th="http://www.thymeleaf.org">
 
-<!-- HEADER START -->
-<head th:replace="~{template/fragments/header :: fragment-header}">
-    <title>blank layout</title>
+<head>
+
+    <!-- HEADER START -->
+    <head th:replace="~{fragments/header :: fragment-header}">
+        <title>blank layout</title>
+    </head>
+
 </head>
-<!-- HEADER END -->
 
-<!-- BODY START -->
-<body>
+<body id="page-top">
 
-<!-- CONTENT START -->
-<section th:replace="${content}">
-    <p>기본 레이아웃 컨텐츠</p>
-</section>
-<!-- CONTENT END -->
+<!-- Page Wrapper -->
+<div id="wrapper">
 
-<!-- SCRIPT START -->
-<script th:replace="~{template/fragments/script :: fragment-script}"></script>
-<!-- SCRIPT END -->
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+            <!-- CONTENT START -->
+            <section th:replace="${content}">
+                <p>Blank 레이아웃 컨텐츠</p>
+            </section>
+            <!-- CONTENT END -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- SCRIPT START -->
+        <div th:replace="~{fragments/script :: fragment-script}"></div>
+        <!-- SCRIPT END -->
+    </div>
+    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Page Wrapper -->
 
 </body>
-<!-- BODY END -->
 
 </html>

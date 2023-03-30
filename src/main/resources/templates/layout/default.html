@@ -1,59 +1,64 @@
 <!DOCTYPE html>
 <html lang="ko" th:fragment="layout (content)" xmlns:th="http://www.thymeleaf.org">
 
-<!-- HEADER START -->
-<head th:replace="~{template/fragments/header :: fragment-header}">
-    <title>default layout</title>
+<head>
+
+    <!-- HEADER START -->
+    <head th:replace="~{fragments/header :: fragment-header}">
+        <title>default layout</title>
+    </head>
+
 </head>
-<!-- HEADER END -->
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Sidebar -->
+    <div th:replace="~{fragments/sidebar :: fragment-sidebar}"></div>
+    <!-- End of Sidebar -->
 
 
-<!-- BODY START -->
-<body>
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
 
-<div id="body">
-    <div id="wrap">
-        <div id="header">
-            <!-- TOP START -->
-            <div th:replace="~{template/fragments/top :: fragment-top}">
-                <p>해더 컨텐츠</p>
-            </div>
-            <!-- TOP END -->
+        <!-- Main Content -->
+        <div id="content">
 
-            <!-- MAIN MENU START -->
-            <div th:replace="~{template/fragments/mainMenu :: fragment-mainMenu}">
-                <p>메뉴 컨텐츠</p>
-            </div>
-            <!-- MAIN MENU END -->
-        </div>
+            <!-- Topbar -->
+            <div th:replace="~{fragments/top :: fragment-top}"></div>
+            <!-- End of Topbar -->
 
-        <div id="container">
+            <!-- CONTENT START -->
+            <section th:replace="${content}">
+                <p>기본 레이아웃 컨텐츠</p>
+            </section>
+            <!-- CONTENT END -->
 
-            <!-- NAVI START -->
-            <div th:replace="~{template/fragments/navi :: fragment-navi}">
-                <p>네비게이션 컨텐츠</p>
-            </div>
-            <!-- NAVI END -->
 
         </div>
-        <!-- CONTENT START -->
-        <section th:replace="${content}">
-            <p>기본 레이아웃 컨텐츠</p>
-        </section>
-        <!-- CONTENT END -->
+        <!-- End of Main Content -->
 
+        <!-- FOOTER START -->
+        <div th:replace="~{fragments/footer :: fragment-footer}"></div>
+        <!-- FOOTER END -->
+        <!-- SCRIPT START -->
+        <div th:replace="~{fragments/script :: fragment-script}"></div>
+        <!-- SCRIPT END -->
     </div>
+    <!-- End of Content Wrapper -->
 </div>
+<!-- End of Page Wrapper -->
 
-<!-- FOOTER START -->
-<div th:replace="~{template/fragments/footer :: fragment-footer}"></div>
-<!-- FOOTER END -->
+<!-- Scroll to Top Button Start-->
+<div th:replace="~{fragments/scroll :: fragment-scroll}"></div>
+<!-- Scroll to Top Button End-->
 
-<!-- SCRIPT START -->
-<div th:replace="~{template/fragments/script :: fragment-script}"></div>
-<!-- SCRIPT END -->
+
+<!-- Logout Modal-->
+<div th:replace="~{fragments/logoutModal :: fragment-logoutModal}"></div>
+<!-- End of Logout Modal-->
 
 </body>
-<!-- BODY END -->
 
 </html>

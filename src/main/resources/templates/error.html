@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/default :: layout(~{::section})}" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<section>
+    <!-- Content Row -->
+        <div class="row">
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-12 col-md-12 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">발생시간</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${timestamp}"></div>
+                            </div>
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">상태코드</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${status}"></div>
+                            </div>
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">에러</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${error}"></div>
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-primary" th:onclick="history.back()">이전화면</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ></div>
+
+            <!-- Earnings (Monthly) Card Example -->
+    </div>
+</section>
+</html>

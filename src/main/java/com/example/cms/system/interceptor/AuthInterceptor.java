@@ -1,7 +1,7 @@
 package com.example.cms.system.interceptor;
 
-import com.example.cms.domain.adminmenugroup.dto.AdminGroupMenuDTO;
 import com.example.cms.domain.admin.dto.AuthAdminDTO;
+import com.example.cms.domain.adminmenugroup.dto.AdminGroupMenuDTO;
 import com.example.cms.system.properties.ProjectProperties;
 import com.example.cms.system.util.HttpServletUtil;
 import com.example.cms.system.util.MessageUtil;
@@ -78,6 +78,11 @@ public class AuthInterceptor implements HandlerInterceptor {
             if (authMap != null) {
                 //요청 주소의 접근 권한 확인
                 adminGroupMenuDTO = authMap.get(requestURI);
+                if (adminGroupMenuDTO == null) {
+                    log.info("# ==> 없는 주소요청 requestURI : {} ", requestURI);
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "대상메뉴없음");
+                    return false;
+                }
                 boolean menuAccess = adminGroupMenuDTO.menuAccess();
                 if (menuAccess) {
                     // 권한이 있으면 - 현재 메뉴 정보를 request 에 담는다, front 에서 메뉴 상태 표시에 사용
