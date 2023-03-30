@@ -1,11 +1,10 @@
-package com.example.cms.web.controller.admin;
+package com.example.cms.web.controller.auth;
 
 import com.example.cms.domain.admin.service.AdminService;
 import com.example.cms.domain.admin.dto.AuthAdminDTO;
 import com.example.cms.system.util.MessageUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.security.auth.login.AccountException;
-import javax.security.auth.login.AccountNotFoundException;
 import javax.security.auth.login.CredentialNotFoundException;
 
 import static com.example.cms.system.constant.GlobalConst.SESSION_LOGIN_INFO;
@@ -24,7 +22,7 @@ import static com.example.cms.system.util.HttpServletUtil.*;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class AdminController {
+public class AuthController {
     private final AdminService adminService;
     private final MessageUtil messageUtil;
 

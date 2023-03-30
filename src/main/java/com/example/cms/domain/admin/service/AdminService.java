@@ -60,7 +60,8 @@ public class AdminService {
      */
     public AuthAdminDTO loginProcess(String adminId, String password) throws CredentialNotFoundException, AccountNotFoundException {
 
-        Admin admin = adminRepository.findByAdminId(adminId).orElseThrow(() -> new AccountNotFoundException("아이디를 확인해주세요."));
+        Admin admin = adminRepository.findByAdminId(adminId)
+                .orElseThrow(() -> new AccountNotFoundException("아이디를 확인해주세요."));
 
         if (!passwordEncoder.matches(password, admin.getPassword())) {
             throw new CredentialNotFoundException("비밀번호가 일치하지 않습니다.");

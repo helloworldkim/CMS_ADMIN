@@ -61,6 +61,7 @@ public class Admin extends BaseEntity {
                 .adminGroupName(adminGroup.getName())
                 .adminGroupId(adminGroup.getId())
                 .adminId(adminId)
+                .adminName(adminName)
                 .adminMainAccessType(adminGroup.getAccessType())
                 .email(email)
                 .homeUrl("/")

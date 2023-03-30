@@ -1,5 +1,18 @@
 <!DOCTYPE html>
 <html th:replace="~{layout/default :: layout(~{::section})}" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <section>
+
+    <nav>
+        <ul>
+            <li th:each="menu : ${topLevelMenus}">
+                <a th:href="@{${menu.url}}" th:text="${menu.name}"></a>
+                <ul th:if="${childMenusByParentId[menu.id]}">
+                    <li th:each="subMenu : ${childMenusByParentId[menu.id]}">
+                        <a th:href="@{${subMenu.url}}" th:text="${subMenu.name}"></a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
 </section>
 </html>

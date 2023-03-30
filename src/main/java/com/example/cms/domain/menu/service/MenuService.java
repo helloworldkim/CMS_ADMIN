@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -17,9 +18,6 @@ public class MenuService {
 
     private final MenuRepository menuRepository;
 
-    public List<MenuResDTO> getMenuResDTOListByQureydsl() {
-        return menuRepository.findMenuListWithQuerydsl();
-    }
     @Transactional
     public Long save(Menu menu) {
         return menuRepository.save(menu).getId();
@@ -32,5 +30,15 @@ public class MenuService {
     @Transactional
     public void deleteById(Long id) {
         menuRepository.deleteById(id);
+    }
+
+    public List<Menu> getTopLevelMenus() {
+        return menuRepository.findByParentIdOrderByOrderAsc(null);
+    }
+
+    public Map<Long, List<Menu>> getChildMenusByParentId(Map<Long, List<Menu>> childMenusByParent, Long parentId) {
+        List<Menu> childMenus = menuRepository.findByParentIdOrderByOrderAsc(parentId);
+        childMenusByParent.put(parentId, childMenus);
+        return childMenusByParent;
     }
 }

@@ -54,6 +54,8 @@ spring:
         #      show_sql: true # sout 으로 출력하기에 바람직하지 않음
         format_sql: true
         default_batch_fetch_size: 500
+    # open in view 설정 false 적용
+    open-in-view: false
 
 # =====================================================================================================================
 # logging
