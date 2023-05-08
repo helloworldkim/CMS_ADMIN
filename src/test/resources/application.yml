@@ -88,17 +88,3 @@ logging:
   # 패턴
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%5.5p) [%15.15t] [%clr(%-36.36X{REQ_TRACE_ID}){magenta}] --- %clr(%-40.40logger{39}){cyan} : %m%n%throwable"
-    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} %5.5p [%15.15t] [%-36.36X{REQ_TRACE_ID}] --- %-40.40logger{39} : %m%n%throwable"
-  # 파일
-  file:
-    path: logs
-    name: ${logging.file.path}/output.log
-  logback:
-    rollingpolicy:
-      # 롤링
-      max-history: 30
-      max-file-size: 100MB
-      file-name-pattern: ${logging.file.path}/output_%d{yyyyMMdd}_%i.log
-  charset:
-    file: UTF-8
-    console: UTF-8
