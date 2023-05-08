@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/default :: layout(~{::section})}" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<section>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5>메뉴 리스트</h5>
+                    <button class="btn btn-primary">등록</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <th:block th:each="menu : ${topLevelMenus}">
+                    <!-- 최상위 메뉴 시작 -->
+                    <div class="list-group">
+                        <a th:href="@{${menu.url}}" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1" th:text="${menu.name}">메뉴</h6>
+                                <p class="mb-1" th:text="${menu.url}"></p>
+                                <small></small>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- 최상위 메뉴 종료 -->
+                    <!-- 하위메뉴 시작 -->
+                    <th:block th:if="${childMenusByParentId[menu.id]}"
+                              th:each="subMenu : ${childMenusByParentId[menu.id]}">
+                        <div class="list-group ml-3">
+                            <a th:href="@{${subMenu.url}}" class="list-group-item list-group-item-action">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1" th:text="${subMenu.name}">메뉴</h6>
+                                    <p class="mb-1" th:text="${subMenu.url}"></p>
+                                    <small></small>
+                                </div>
+                            </a>
+                        </div>
+                    </th:block>
+                    <!-- 하위메뉴 종료 -->
+                </th:block>
+            </div>
+        </div>
+    </div>
+</section>
+
+</html>

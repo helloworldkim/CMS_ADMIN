@@ -51,12 +51,12 @@ class AdminGroupMenuServiceTest {
 
         Menu menu1 = Menu.builder()
                 .name("1번메뉴")
-                .listOrder(1)
+                .order(1)
                 .build();
         Menu saveMenu1 = menuRepository.save(menu1);
         Menu menu2 = Menu.builder()
                 .name("1번메뉴")
-                .listOrder(2)
+                .order(2)
                 .url("/abc/test")
                 .build();
         em.flush();

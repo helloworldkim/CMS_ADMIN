@@ -21,7 +21,7 @@ public class MenuController {
 
     private final MenuService menuService;
 
-    @GetMapping("/menu")
+    @GetMapping("/system/menu")
     public String menuList(Model model) {
         List<Menu> topLevelMenus = menuService.getTopLevelMenus();
         Map<Long, List<Menu>> childMenusByParentId = new LinkedHashMap<>();
@@ -30,6 +30,6 @@ public class MenuController {
         }
         model.addAttribute("topLevelMenus", topLevelMenus);
         model.addAttribute("childMenusByParentId", childMenusByParentId);
-        return "/index";
+        return "/menu/list";
     }
 }
