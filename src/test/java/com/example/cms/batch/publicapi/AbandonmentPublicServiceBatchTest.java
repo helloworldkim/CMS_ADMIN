@@ -39,25 +39,19 @@ class AbandonmentPublicServiceBatchTest {
     @Autowired
     private ShelterRepository shelterRepository;
 
-    private final String _type = "&_type=json";
-    private final String serviceKey = "?serviceKey=BKC8cVQJZmzbzk760iM8pPU0%2B%2FMG35Y95n3SBqKnMgCEob9unhBApWNHXrC1qvgoM0vh3CvuWxWZdeyzF1PVNA%3D%3D";
+    private final String BASE_URL = "http://apis.data.go.kr/1543061/abandonmentPublicSrvc";
+    private final String TYPE = "&_type=json";
+    private final String SERVICE_KEY = "?serviceKey=BKC8cVQJZmzbzk760iM8pPU0%2B%2FMG35Y95n3SBqKnMgCEob9unhBApWNHXrC1qvgoM0vh3CvuWxWZdeyzF1PVNA%3D%3D";
 
     @Test
     @DisplayName("시도 조회 및 insert 테스트")
     void sidoInertTest() throws Exception {
 
-        String url = "http://apis.data.go.kr/1543061/abandonmentPublicSrvc/sido";
+        String endpoint = "/sido";
         String numOfRows = "&numOfRows=1000";
         String pageNo = "&pageNo=1";
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(url);
-        sb.append(serviceKey);
-        sb.append(_type);
-        sb.append(numOfRows);
-        sb.append(pageNo);
-
-        URI uri = new URI(sb.toString());
+        URI uri = buildApiUri(endpoint, pageNo, numOfRows);
         log.info("uri = {}", uri);
 
         ResponseDto res =  rt.getForObject(uri, ResponseDto.class);
@@ -83,18 +77,10 @@ class AbandonmentPublicServiceBatchTest {
     void sigunguInertTest() throws Exception {
 
         //임시 시도코드 데이터
-        String uprCd = "6110000";
-        String url = "http://apis.data.go.kr/1543061/abandonmentPublicSrvc/sigungu";
-        String upr_cd = "&upr_cd="+uprCd;
+        String upr_cd = "&upr_cd=6110000";
+        String endpoint = "/sigungu";
 
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(url);
-        sb.append(serviceKey);
-        sb.append(_type);
-        sb.append(upr_cd);
-
-        URI uri = new URI(sb.toString());
+        URI uri = buildApiUri(endpoint, upr_cd);
         log.info("uri = {}", uri);
 
         ResponseDto res =  rt.getForObject(uri, ResponseDto.class);
@@ -121,20 +107,11 @@ class AbandonmentPublicServiceBatchTest {
 
         String uprCd = "6110000"; //시도코드
         String orgCd = "3220000"; //시군구코드
-
-        String url = "http://apis.data.go.kr/1543061/abandonmentPublicSrvc/shelter";
+        String endpoint = "/shelter";
         String upr_cd = "&upr_cd="+uprCd;
         String org_cd = "&org_cd="+orgCd;
 
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(url);
-        sb.append(serviceKey);
-        sb.append(_type);
-        sb.append(upr_cd);
-        sb.append(org_cd);
-
-        URI uri = new URI(sb.toString());
+        URI uri = buildApiUri(endpoint, upr_cd, org_cd);
         log.info("uri = {}", uri);
 
         ResponseDto res =  rt.getForObject(uri, ResponseDto.class);
@@ -162,19 +139,15 @@ class AbandonmentPublicServiceBatchTest {
 
         //임시 시도코드 데이터 개, 고양이, 기타
         String[] upKindCdArray = "417000,422400,429900".split(",");
+
         //3개 종류 수행
         for (String upKidCd : upKindCdArray) {
             log.info("품졸별 상세 리스트 조회 시작 = {}", upKidCd);
-            String url = "http://apis.data.go.kr/1543061/abandonmentPublicSrvc/kind";
+
+            String endpoint = "/kind";
             String up_kind_cd = "&up_kind_cd="+upKidCd;
 
-            StringBuilder sb = new StringBuilder();
-            sb.append(url);
-            sb.append(serviceKey);
-            sb.append(_type);
-            sb.append(up_kind_cd);
-
-            URI uri = new URI(sb.toString());
+            URI uri = buildApiUri(endpoint, up_kind_cd);
             log.info("uri = {}", uri);
 
             ResponseDto res =  rt.getForObject(uri, ResponseDto.class);
@@ -196,10 +169,12 @@ class AbandonmentPublicServiceBatchTest {
             animalKindRepository.saveAll(list);
 
         }
-
-
-
-
-
+    }
+    private URI buildApiUri(String endpoint ,String... params) throws Exception {
+        StringBuilder sb = new StringBuilder(BASE_URL).append(endpoint).append(SERVICE_KEY).append(TYPE);
+        for (String param : params) {
+            sb.append(param);
+        }
+        return new URI(sb.toString());
     }
 }
