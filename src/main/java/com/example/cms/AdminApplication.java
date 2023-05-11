@@ -1,5 +1,7 @@
 package com.example.cms;
 
+import com.example.cms.system.aop.logtrace.LogTrace;
+import com.example.cms.system.aop.logtrace.ThreadLocalLogTrace;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +21,10 @@ public class AdminApplication {
 	@Bean
 	public RestTemplate restTemplate() {
 		return new RestTemplate();
+	}
+	@Bean
+	public LogTrace logTrace() {
+		return new ThreadLocalLogTrace();
 	}
 
 }
