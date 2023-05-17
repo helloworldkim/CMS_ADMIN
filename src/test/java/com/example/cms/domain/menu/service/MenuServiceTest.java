@@ -28,7 +28,7 @@ class MenuServiceTest {
         //given
         Menu menu1 = Menu.builder()
                 .name("1번메뉴")
-                .order(1)
+                .listOrder(1)
                 .build();
         //when
         Long id = menuService.save(menu1);
@@ -45,7 +45,7 @@ class MenuServiceTest {
         //given
         Menu menu1 = Menu.builder()
                 .name("1번메뉴")
-                .order(1)
+                .listOrder(1)
                 .build();
         menuRepository.save(menu1);
 
@@ -54,7 +54,7 @@ class MenuServiceTest {
         assertThrows(IllegalArgumentException.class, () -> {
             Menu menu2 = Menu.builder()
                     .name("1번메뉴")
-                    .order(2)
+                    .listOrder(2)
                     .build();
             menu2.setParent(menu1);
         });
@@ -67,12 +67,12 @@ class MenuServiceTest {
         //given
         Menu menu1 = Menu.builder()
                 .name("1번메뉴")
-                .order(1)
+                .listOrder(1)
                 .build();
         menuService.save(menu1);
         Menu menu2 = Menu.builder()
                 .name("1-1번메뉴")
-                .order(1)
+                .listOrder(1)
                 .url("/abc/test")
                 .build();
         //when
@@ -90,7 +90,7 @@ class MenuServiceTest {
         //given
         Menu menu1 = Menu.builder()
                 .name("1번메뉴")
-                .order(1)
+                .listOrder(1)
                 .build();
         //when
         Menu saveMenu = menuRepository.save(menu1);
@@ -107,7 +107,7 @@ class MenuServiceTest {
         //given
         Menu menu1 = Menu.builder()
                 .name("1번메뉴")
-                .order(1)
+                .listOrder(1)
                 .build();
         Menu saveMenu = menuRepository.save(menu1);
         Long id = menu1.getId();
@@ -127,12 +127,12 @@ class MenuServiceTest {
         //given
         Menu menu1 = Menu.builder()
                 .name("1번메뉴")
-                .order(1)
+                .listOrder(1)
                 .build();
         Menu saveMenu = menuRepository.save(menu1);
         Menu menu2 = Menu.builder()
                 .name("1-1번메뉴")
-                .order(1)
+                .listOrder(1)
                 .url("/abc/test")
                 .build();
         menu2.setParent(menu1);

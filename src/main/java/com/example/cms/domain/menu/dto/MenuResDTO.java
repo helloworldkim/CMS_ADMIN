@@ -25,7 +25,7 @@ public class MenuResDTO {
         this.name = menu.getName();
         this.parentId = menu.getParent() != null ? menu.getParent().getId() : null;
         this.pathUrl = menu.getUrl() != null ? menu.getUrl() : "";
-        this.listOrder = menu.getOrder();
+        this.listOrder = menu.getListOrder();
         this.children = menu.getChildren().stream().map(MenuResDTO::new).toList();
     }
 

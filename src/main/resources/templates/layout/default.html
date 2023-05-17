@@ -7,53 +7,31 @@
     <head th:replace="~{fragments/header :: fragment-header}">
         <title>default layout</title>
     </head>
-
 </head>
 
-<body id="page-top">
+<body>
+    <!-- Main Content -->
+    <div class="container">
 
-<!-- Page Wrapper -->
-<div id="wrapper">
-    <!-- Sidebar -->
-    <div th:replace="~{fragments/sidebar :: fragment-sidebar}"></div>
-    <!-- End of Sidebar -->
+        <!-- Topbar -->
+        <div th:replace="~{fragments/top :: fragment-top}"></div>
+        <!-- End of Topbar -->
 
+        <!-- CONTENT START -->
+        <section th:replace="${content}">
+            <p>기본 레이아웃 컨텐츠</p>
+        </section>
+        <!-- CONTENT END -->
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-        <!-- Main Content -->
-        <div id="content">
-
-            <!-- Topbar -->
-            <div th:replace="~{fragments/top :: fragment-top}"></div>
-            <!-- End of Topbar -->
-
-            <!-- CONTENT START -->
-            <section th:replace="${content}">
-                <p>기본 레이아웃 컨텐츠</p>
-            </section>
-            <!-- CONTENT END -->
-
-
-        </div>
-        <!-- End of Main Content -->
-
-        <!-- FOOTER START -->
-        <div th:replace="~{fragments/footer :: fragment-footer}"></div>
-        <!-- FOOTER END -->
-        <!-- SCRIPT START -->
-        <div th:replace="~{fragments/script :: fragment-script}"></div>
-        <!-- SCRIPT END -->
     </div>
-    <!-- End of Content Wrapper -->
-</div>
-<!-- End of Page Wrapper -->
+    <!-- End of Main Content -->
 
-<!-- Scroll to Top Button Start-->
-<div th:replace="~{fragments/scroll :: fragment-scroll}"></div>
-<!-- Scroll to Top Button End-->
-
+    <!-- FOOTER START -->
+    <div th:replace="~{fragments/footer :: fragment-footer}"></div>
+    <!-- FOOTER END -->
+    <!-- SCRIPT START -->
+    <div th:replace="~{fragments/script :: fragment-script}"></div>
+    <!-- SCRIPT END -->
 
 <!-- Logout Modal-->
 <div th:replace="~{fragments/logoutModal :: fragment-logoutModal}"></div>

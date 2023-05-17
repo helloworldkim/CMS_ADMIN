@@ -24,7 +24,7 @@ public class Menu extends BaseEntity {
     private Menu parent;
     private String name;
     private String url;
-    private int order;
+    private int listOrder;
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Menu> children = new ArrayList<>();
 
@@ -35,12 +35,12 @@ public class Menu extends BaseEntity {
         this.parent = parent;
     }
     @Builder
-    public Menu(Long id, Menu parent, String name, String url, int order, List<Menu> children) {
+    public Menu(Long id, Menu parent, String name, String url, int listOrder, List<Menu> children) {
         this.id = id;
         this.parent = parent;
         this.name = name;
         this.url = url;
-        this.order = order;
+        this.listOrder = listOrder;
         this.children = children == null ? List.of() : children;
     }
 }

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class AbandonmentPublicServiceBatch {
 
     //일단 1분마다
-    @Scheduled(cron = "0 * * * * *", zone = "Asia/Seoul")
+//    @Scheduled(cron = "0 * * * * *", zone = "Asia/Seoul")
     public void startBatch() {
         log.info("1분마다 실행 확인!!");
 

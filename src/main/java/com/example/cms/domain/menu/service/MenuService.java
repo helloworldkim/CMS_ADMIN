@@ -33,11 +33,11 @@ public class MenuService {
     }
 
     public List<Menu> getTopLevelMenus() {
-        return menuRepository.findByParentIdOrderByOrderAsc(null);
+        return menuRepository.findByParentIdOrderByListOrderAsc(null);
     }
 
     public Map<Long, List<Menu>> getChildMenusByParentId(Map<Long, List<Menu>> childMenusByParent, Long parentId) {
-        List<Menu> childMenus = menuRepository.findByParentIdOrderByOrderAsc(parentId);
+        List<Menu> childMenus = menuRepository.findByParentIdOrderByListOrderAsc(parentId);
         childMenusByParent.put(parentId, childMenus);
         return childMenusByParent;
     }

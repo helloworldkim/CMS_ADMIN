@@ -53,7 +53,7 @@ public class AdminGroupMenu extends BaseEntity {
                 .name(this.menu.getName())
                 .url(this.menu.getUrl())
                 .menuAccess(this.menuAccess)
-                .listOrder(this.menu.getOrder())
+                .listOrder(this.menu.getListOrder())
                 .build();
     }
 }
