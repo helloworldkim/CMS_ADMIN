@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko" th:fragment="fragment-sidebar" xmlns:th="http://www.thymeleaf.org">
+        <!-- Nav Item - Pages Collapse Menu -->
+        <!--
+        <th:block th:each="mainMenu : ${session.get(@globalConst.SESSION_LOGIN_INFO).mainMenuList}">
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse"
+                   th:data-target="'#collapse' + ${mainMenu.menuId}"
+                   aria-expanded="true"
+                   th:aria-controls="'collapse' + ${mainMenu.menuId}">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span th:text="${mainMenu.name}">최상위 메뉴</span>
+                </a>
+
+                <div th:id="'collapse' + ${mainMenu.menuId}"
+                     class="collapse"
+                     th:aria-labelledby="'heading' + ${mainMenu.menuId}"
+                     data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <th:block th:each="subMenuList, subMenuListStat : ${session.get(@globalConst.SESSION_LOGIN_INFO).subMenuMap[mainMenu.menuId]}">
+                            <a class="collapse-item" th:href="@{${subMenuList.url}}" th:text="${subMenuList.name}"></a>
+                        </th:block>
+                    </div>
+                </div>
+            </li>
+            &lt;!&ndash; Divider &ndash;&gt;
+            <hr class="sidebar-divider">
+        </th:block>-->
+
+        <nav id="sidebar" class="sidebar js-sidebar">
+            <div class="sidebar-content js-simplebar">
+                <a class="sidebar-brand" href="index.html">
+                    <span class="align-middle">AdminKit</span>
+                </a>
+
+                <ul class="sidebar-nav">
+                    <li class="sidebar-header">
+                        Pages
+                    </li>
+
+                    <li class="sidebar-item active">
+                        <a class="sidebar-link" href="index.html">
+                            <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="pages-profile.html">
+                            <i class="align-middle" data-feather="user"></i> <span class="align-middle">Profile</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="pages-sign-in.html">
+                            <i class="align-middle" data-feather="log-in"></i> <span class="align-middle">Sign In</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="pages-sign-up.html">
+                            <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Sign Up</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="pages-blank.html">
+                            <i class="align-middle" data-feather="book"></i> <span class="align-middle">Blank</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-header">
+                        Tools & Components
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="ui-buttons.html">
+                            <i class="align-middle" data-feather="square"></i> <span class="align-middle">Buttons</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="ui-forms.html">
+                            <i class="align-middle" data-feather="check-square"></i> <span class="align-middle">Forms</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="ui-cards.html">
+                            <i class="align-middle" data-feather="grid"></i> <span class="align-middle">Cards</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="ui-typography.html">
+                            <i class="align-middle" data-feather="align-left"></i> <span class="align-middle">Typography</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="icons-feather.html">
+                            <i class="align-middle" data-feather="coffee"></i> <span class="align-middle">Icons</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-header">
+                        Plugins & Addons
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="charts-chartjs.html">
+                            <i class="align-middle" data-feather="bar-chart-2"></i> <span class="align-middle">Charts</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a class="sidebar-link" href="maps-google.html">
+                            <i class="align-middle" data-feather="map"></i> <span class="align-middle">Maps</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-cta">
+                    <div class="sidebar-cta-content">
+                        <strong class="d-inline-block mb-2">Upgrade to Pro</strong>
+                        <div class="mb-3 text-sm">
+                            Are you looking for more components? Check out our premium version.
+                        </div>
+                        <div class="d-grid">
+                            <a href="upgrade-to-pro.html" class="btn btn-primary">Upgrade to Pro</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+
+</html>

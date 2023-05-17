@@ -17,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.security.auth.login.AccountNotFoundException;
 import javax.security.auth.login.CredentialNotFoundException;
 import java.util.*;
 
@@ -58,13 +57,13 @@ public class AdminService {
      * @return AuthAdminDTO
      * @throws CredentialNotFoundException, AccountNotFoundException
      */
-    public AuthAdminDTO loginProcess(String adminId, String password) throws CredentialNotFoundException, AccountNotFoundException {
+    public AuthAdminDTO loginProcess(String adminId, String password) {
 
         Admin admin = adminRepository.findByAdminId(adminId)
-                .orElseThrow(() -> new AccountNotFoundException("아이디를 확인해주세요."));
+                .orElseThrow(() -> new AdminLoginException("아이디를 확인해주세요."));
 
         if (!passwordEncoder.matches(password, admin.getPassword())) {
-            throw new CredentialNotFoundException("비밀번호가 일치하지 않습니다.");
+            throw new AdminLoginException("비밀번호가 일치하지 않습니다.");
         }
 
         // ==============================

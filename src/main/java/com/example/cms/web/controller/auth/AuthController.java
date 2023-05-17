@@ -1,7 +1,8 @@
 package com.example.cms.web.controller.auth;
 
-import com.example.cms.domain.admin.service.AdminService;
 import com.example.cms.domain.admin.dto.AuthAdminDTO;
+import com.example.cms.domain.admin.service.AdminLoginException;
+import com.example.cms.domain.admin.service.AdminService;
 import com.example.cms.system.util.MessageUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,9 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.security.auth.login.AccountException;
-import javax.security.auth.login.CredentialNotFoundException;
 
 import static com.example.cms.system.constant.GlobalConst.SESSION_LOGIN_INFO;
 import static com.example.cms.system.util.HttpServletUtil.*;
@@ -56,9 +54,10 @@ public class AuthController {
         AuthAdminDTO authAdminDTO = null;
         try {
             authAdminDTO = adminService.loginProcess(loginForm.getAdminId(), loginForm.getPassword());
-        } catch (AccountException | CredentialNotFoundException e) {
-                bindingResult.reject("password", null, messageUtil.getMessage("message.auth.login.info-error"));
-                return "admin/loginForm";
+        } catch (AdminLoginException e) {
+            log.info("AdminLoginException e = {}", e.getMessage());
+            bindingResult.reject("password", null, messageUtil.getMessage("message.auth.login.info-error"));
+            return "admin/loginForm";
         }
 
 

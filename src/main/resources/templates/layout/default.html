@@ -10,12 +10,12 @@
 </head>
 
 <body>
-    <!-- Main Content -->
-    <div class="container">
+<div class="wrapper">
+    <!-- SIDEBAR -->
+    <nav th:replace="~{fragments/sidebar :: fragment-sidebar}"></nav>
+    <!-- SIDEBAR END -->
 
-        <!-- Topbar -->
-        <div th:replace="~{fragments/top :: fragment-top}"></div>
-        <!-- End of Topbar -->
+    <div class="main">
 
         <!-- CONTENT START -->
         <section th:replace="${content}">
@@ -23,19 +23,19 @@
         </section>
         <!-- CONTENT END -->
 
+        <!-- FOOTER START -->
+        <footer th:replace="~{fragments/footer :: fragment-footer}"></footer>
+        <!-- FOOTER END -->
     </div>
-    <!-- End of Main Content -->
 
-    <!-- FOOTER START -->
-    <div th:replace="~{fragments/footer :: fragment-footer}"></div>
-    <!-- FOOTER END -->
+</div>
+
     <!-- SCRIPT START -->
     <div th:replace="~{fragments/script :: fragment-script}"></div>
     <!-- SCRIPT END -->
-
-<!-- Logout Modal-->
-<div th:replace="~{fragments/logoutModal :: fragment-logoutModal}"></div>
-<!-- End of Logout Modal-->
+<!--     Logout Modal-->
+<!--    <div th:replace="~{fragments/logoutModal :: fragment-logoutModal}"></div>-->
+<!--     End of Logout Modal-->
 
 </body>
 

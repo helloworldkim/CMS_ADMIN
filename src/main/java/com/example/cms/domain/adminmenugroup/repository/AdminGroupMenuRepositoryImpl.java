@@ -24,7 +24,7 @@ public class AdminGroupMenuRepositoryImpl implements AdminGroupMenuCustomReposit
                         adminGroupMenu.adminGroup.id.eq(adminGroupId)
                         , adminGroupMenu.menuAccess.isTrue()
                 )
-                .orderBy(menu.order.asc())
+                .orderBy(menu.listOrder.asc())
                 .fetch();
     }
 
