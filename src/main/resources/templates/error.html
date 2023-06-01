@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html th:replace="~{layout/default :: layout(~{::section})}" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-<section>
+<section class="main">
+    <!-- TOPBAR END -->
+    <nav th:replace="~{fragments/topbar :: fragment-topbar}"></nav>
+    <!-- TOPBAR END -->
+    <main class="content">
     <!-- Content Row -->
         <div class="row">
             <!-- Earnings (Monthly) Card Example -->
@@ -10,14 +14,14 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">발생시간</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${timestamp}"></div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${#dates.format(timestamp,'yyyy-MM-dd HH:mm:ss')}"></div>
                             </div>
                             <div class="col mr-2">
                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">상태코드</div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${status}"></div>
                             </div>
                             <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">에러</div>
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">에러메시지</div>
                                 <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${error}"></div>
                             </div>
                             <div class="col-auto">
@@ -27,9 +31,7 @@
                     </div>
                 </div>
             </div>
-            <div ></div>
-
-            <!-- Earnings (Monthly) Card Example -->
-    </div>
+        </div>
+    </main>
 </section>
 </html>
