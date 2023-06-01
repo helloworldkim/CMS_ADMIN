@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.example.cms.system.constant.GlobalConst.*;
 
@@ -33,7 +35,8 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("# ============================== AuthInterceptor [preHandle] ======================================");
         HttpSession session = request.getSession();
-        String requestURI = request.getRequestURI();
+        int depthCount = urlDepthCheck(request.getRequestURI(), "/");
+        String requestURI = getRequestURIByDepth(request.getRequestURI(), depthCount);
 
         // 계정 인증 객체
         AuthAdminDTO authAdminDTO;
@@ -111,6 +114,34 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         return false;
+    }
+
+    private String getRequestURIByDepth(String requestURI, int depthCount) {
+        if (depthCount < 3) {
+            return requestURI;
+        }
+        return StringUtils.substring(requestURI, 0, requestURI.lastIndexOf("/"));
+    }
+
+    /**
+     * 특정 문자(/)가 몇번 포함되어있는지 확인 후 체크
+     * ex) /login, /system/menu, /system/menu/1 과 같은 url이 있다고할때
+     * /login --> 1
+     * /system/menu --> 2
+     * /system/menu/1 --> 3 을 반환
+     * @param requestUri
+     * @param targetChar
+     * @return
+     */
+    private int urlDepthCheck(String requestUri, String targetChar) {
+        Pattern pattern = Pattern.compile(Pattern.quote(targetChar));
+        Matcher matcher = pattern.matcher(requestUri);
+
+        int count = 0;
+        while (matcher.find()) {
+            count++;
+        }
+        return count;
     }
 
     private void setAuthRedirect(String referer, String contextPath, HttpServletRequest request,

@@ -9,10 +9,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,5 +33,12 @@ public class MenuController {
         model.addAttribute("topLevelMenus", topLevelMenus);
         model.addAttribute("childMenusByParentId", childMenusByParentId);
         return "/menu/list";
+    }
+
+    @GetMapping("/system/menu/{id}")
+    public String menuForm(Model model, @PathVariable Long id) {
+        Menu menu = menuService.findById(id).orElseThrow(() -> new IllegalArgumentException("메뉴가 없습니다."));
+        model.addAttribute("menu", menu);
+        return "/menu/form";
     }
 }
