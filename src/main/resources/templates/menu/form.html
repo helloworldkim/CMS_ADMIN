@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/default :: layout(~{::section})}" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<section class="main">
+
+    <script th:inline="javascript">
+        const detail = "/system/menu/";
+        const list = "/system/menu";
+
+        let fnRegist = (targetNum) => {
+            const url = detail + targetNum;
+            //form submit
+        };
+
+    </script>
+
+    <!-- TOPBAR END -->
+    <nav th:replace="~{fragments/topbar :: fragment-topbar}"></nav>
+    <!-- TOPBAR END -->
+
+    <main class="content">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1 class="h3 mb-3"><strong>메뉴</strong>상세</h1>
+                    <button class="btn btn-primary">등록</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">번호</label>
+                    <input type="text" class="form-control" th:field="${menu.id}" readonly>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">메뉴명</label>
+                    <input type="text" class="form-control" th:field="${menu.name}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">url</label>
+                    <input type="text" class="form-control" th:field="${menu.url}">
+                </div>
+            </div>
+        </div>
+    </main>
+
+</section>
+
+</html>

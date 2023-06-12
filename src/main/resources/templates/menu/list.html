@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html th:replace="~{layout/default :: layout(~{::section})}" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-
-<script th:inline="javascript">
-
-</script>
 <section class="main">
+
+    <script th:inline="javascript">
+        const detail = "/system/menu/";
+        const list = "/system/menu";
+
+        let fnDetail = (targetNum) => {
+            const url = detail + targetNum;
+            fnLocationHref(url);
+        };
+
+    </script>
+
     <!-- TOPBAR END -->
     <nav th:replace="~{fragments/topbar :: fragment-topbar}"></nav>
     <!-- TOPBAR END -->
@@ -20,7 +28,7 @@
                 <table class="table table-hover">
                     <thead>
                     <tr>
-                        <th scope="col">순번</th>
+                        <th scope="col">번호</th>
                         <th scope="col">메뉴명</th>
                         <th scope="col">경로</th>
                     </tr>
@@ -28,15 +36,15 @@
                     <tbody>
                     <th:block th:each="menu : ${topLevelMenus}">
                         <tr>
-                            <td th:text="${menu.id}">순서</td>
+                            <td th:text="${menu.id}">순번</td>
                             <td th:text="${menu.name}">메뉴명</td>
                             <td th:text="${menu.url}">url</td>
                         </tr>
                         <!-- 하위메뉴 시작 -->
-                        <tr th:onclick="fnLocationHref([[${subMenu.url}]])"
+                        <tr th:onclick="fnDetail([[${subMenu.id}]])"
                             th:if="${childMenusByParentId[menu.id]}"
                             th:each="subMenu : ${childMenusByParentId[menu.id]}">
-                            <td th:text="${subMenu.id}"></td>
+                            <td th:text="${subMenu.id}">순번</td>
                             <td th:text="${subMenu.name}">메뉴명</td>
                             <td th:text="${subMenu.url}">url</td>
                         </tr>
