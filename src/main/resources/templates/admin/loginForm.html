@@ -1,6 +1,44 @@
 <!DOCTYPE html>
 <html th:replace="~{layout/blank :: layout(~{::section})}" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <section class="main">
+    <script th:inline="javascript">
+        const key = "adminId";
+
+        window.onload = function () {
+            const cookieAdminId = cookieUtil.fnGetCookie(key);
+            if (cookieAdminId) {
+                document.getElementById("adminId").value = cookieAdminId;
+                document.getElementById("saveId").checked = true;
+            }
+        };
+
+        function fnSaveId() {
+            const idSaveCheck = document.getElementById("saveId").checked;
+            const adminIdValue = document.getElementById(key).value;
+            if (idSaveCheck) {
+                cookieUtil.fnSetCookie(key, adminIdValue, {
+                    "max-age": 604800 //일주일 후 만료 (60 * 60 * 24 * 7)
+                })
+            } else {
+                cookieUtil.fnDeleteCookie(key);
+            }
+        }
+
+        function fnCheck() {
+
+            if(fnIsEmptyWithMessageAndFocus("adminId", "아이디")) {
+                return false;
+            }
+            if(fnIsEmptyWithMessageAndFocus("password", "비밀번호")) {
+                return false;
+            }
+
+            fnSaveId();
+        }
+
+
+    </script>
+
     <main class="content d-flex w-100">
         <div class="container d-flex flex-column">
             <div class="row vh-100">
@@ -13,7 +51,11 @@
                                     <div class="text-center">
                                         <h1 class="h3 mb-3"><strong>CMS</strong>어드민</h1>
                                     </div>
-                                    <form name="form" id="form" th:object="${loginForm}" th:action="@{/login}" method="post">
+                                    <form name="form" id="form"
+                                          th:object="${loginForm}"
+                                          th:action="@{/login}"
+                                          method="post"
+                                          onsubmit="return fnCheck()">
                                         <div class="mb-3" th:if="${#fields.hasGlobalErrors()}">
                                             <p class="field-error" th:each="err : ${#fields.globalErrors()}"
                                                th:utext="${err}">전체 오류 메시지</p>
@@ -40,8 +82,8 @@
                                         </div>
                                         <div>
                                             <label class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="remember-me" name="remember-me" checked>
-                                                <span class="form-check-label">Remember me</span>
+                                                <input id="saveId" class="form-check-input" type="checkbox" value="remember-me" name="remember-me">
+                                                <span class="form-check-label">아이디저장</span>
                                             </label>
                                         </div>
                                         <div class="text-center mt-3">
@@ -57,16 +99,6 @@
             </div>
         </div>
     </main>
-    <!--
-    <form name="form" id="form" th:object="${loginForm}" th:action="@{/login}" method="post">
-        <div class="form-group">
-            <div class="custom-control custom-checkbox small">
-                <input type="checkbox" class="custom-control-input" id="customCheck">
-                <label class="custom-control-label" for="customCheck">Remember Me</label>
-            </div>
-        </div>
-        <button class="btn btn-primary btn-user btn-block">Login</button>
-    </form>-->
 </section>
 
 </html>
