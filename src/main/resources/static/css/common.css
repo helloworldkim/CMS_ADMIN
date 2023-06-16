@@ -1,0 +1,186 @@
+@charset "utf-8";
+
+:root {
+    /* 컬러 테마 */
+    --point-color: #f89600;
+    --point-color-light: #fffaf0;
+    --base-color-blue: #2271c8;
+    --base-color-green: #009B4C;
+    --base-color-red: #e43e00;
+    --base-color-orange: #f89600;
+    --base-color-gray: #a4a4a4;
+
+    --header-first-color: #402E32;
+    --header-first-hover-color: #baa89b;
+    --header-second-color: #613C31;
+    --header-second-text-color: #baa89b;
+    --header-third-color: #f89600;
+    --header-third-text-color: #613C31;
+    --header-text-hover-color: #ffffff;
+
+    --error-color: #e43e00;
+    --hover-color: #f89600;
+
+}
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: NotoSansKR, "Noto Sans KR", Dotum, '돋움', Helvetica, "Apple SD Gothic Neo", sans-serif;
+    font-size: 11px;
+    line-height: 18px;
+    color: #444;
+    font-weight: 400;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    background-color: #fdfdfd;
+}
+
+h1, h2, h3, h4 {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 20px;
+    line-height: 34px;
+}
+
+h2 {
+    font-size: 18px;
+    line-height: 30px;
+}
+
+h3 {
+    font-size: 16px;
+    line-height: 26px;
+}
+
+h4 {
+    font-size: 13px;
+    line-height: 20px;
+}
+
+p {
+    font-size: 12px;
+    line-height: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+strong {
+    font-weight: 600;
+}
+
+a {
+    color: #444;
+    text-decoration: none;
+}
+
+a:hover, a:focus, a:active {
+    color: var(--hover-color);
+}
+
+a:active, a:hover {
+    outline: 0;
+}
+
+img {
+    border: 0;
+}
+
+ul, ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+dl {
+    margin: 0;
+    padding: 0;
+}
+
+dt {
+    font-weight: 600;
+}
+
+dd {
+    margin: 0;
+    padding: 0;
+}
+
+hr {
+    width: 100%;
+    border: 0;
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+}
+
+button, input, select, textarea {
+    margin: 0;
+    font: inherit;
+    color: inherit;
+}
+
+button {
+    overflow: visible;
+}
+
+button, select {
+    text-transform: none;
+}
+
+button, html input[type="button"], input[type="reset"], input[type="submit"] {
+    -webkit-appearance: button;
+    cursor: pointer;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: 0;
+}
+
+/* Chrome/Opera/Safari */
+input::-webkit-input-placeholder {
+    color: #999;
+}
+
+/* Firefox 19+ */
+input::-moz-placeholder {
+    color: #999;
+}
+
+/* IE 10+ */
+input:-ms-input-placeholder {
+    color: #999;
+}
+
+/* Firefox 18- */
+input:-moz-placeholder {
+    color: #999;
+}
+
+/* Change the color to your own background color */
+input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active {
+    -webkit-text-fill-color: #000;
+    -webkit-box-shadow: 0 0 0 1000px #fff inset;
+    box-shadow: 0 0 0 1000px #fff inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.field-error {
+    border-color: var(--error-color);
+    color: var(--error-color);
+    width: 100%;
+}

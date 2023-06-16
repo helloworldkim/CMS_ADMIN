@@ -5,6 +5,17 @@
 let fnLocationHref = (url) => {
     location.href = url;
 }
+/**
+ * Ckeditor5 기본셋팅
+ * @param target ('#eidtor')와 같은형태로 id값 필요
+ */
+let fnEditor = (target) => {
+    ClassicEditor
+        .create( document.querySelector( target ) )
+        .catch( error => {
+            console.error( error );
+        } );
+};
 
 let fnIsEmptyWithMessageAndFocus = (name, label) => {
     const message = `${label} 값을 입력해 주세요.`;

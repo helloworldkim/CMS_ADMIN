@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/default :: layout(~{::section})}" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<section class="main">
+    <style>
+        .ck-editor__editable {
+            height: 50vh;
+        }
+    </style>
+    <script th:inline="javascript">
+
+        window.onload = () => {
+            fnEditor("#editor");
+        };
+
+
+        const list = "/board/notice";
+        let fnList = () => {
+            const url = list;
+            fnLocationHref(url);
+        };
+        let fnEdit = () => {
+            let frm = document.getElementById("frm");
+            frm.submit();
+        };
+
+        let fnDelete = (targetNum) => {
+            alert("정말 삭제하시겠습니까?");
+
+        };
+
+    </script>
+
+    <!-- TOPBAR END -->
+    <nav th:replace="~{fragments/topbar :: fragment-topbar}"></nav>
+    <!-- TOPBAR END -->
+
+    <main class="content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h1 class="h3 mb-3"><strong>공지사항</strong>상세</h1>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary m-lg-1" onclick="fnEdit()">수정</button>
+                        <button class="btn btn-primary m-lg-1" onclick="fnDelete([[${notice.id}]])">삭제</button>
+                        <button class="btn btn-primary m-lg-1" onclick="fnList()">목록</button>
+                    </div>
+                </div>
+                <form id="frm" method="post" action="/board/notice/edit">
+                    <div class="card-body" th:object="${notice}">
+                        <div class="mb-3">
+                            <label class="form-label">번호</label>
+                            <input type="text" class="form-control" th:field="*{id}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">제목</label>
+                            <input type="text" class="form-control" th:field="*{title}">
+                        </div>
+                        <div class="field-error pl20" th:errors="*{title}"></div>
+                        <div class="mb-3">
+                            <label class="form-label">내용</label>
+                            <textarea id="editor"
+                                      type="text"
+                                      class="form-control"
+                                      th:field="*{content}"
+                                      rows="3"
+                                      cols="50">
+                            </textarea>
+                        </div>
+                        <div class="field-error pl20" th:errors="*{content}"></div>
+                    </div>
+                </form>
+            </div>
+    </main>
+
+</section>
+
+</html>
