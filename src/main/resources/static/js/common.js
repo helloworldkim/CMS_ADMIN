@@ -5,6 +5,15 @@
 let fnLocationHref = (url) => {
     location.href = url;
 }
+
+/**
+ * 페이지 이동(페이지네이션)
+ * @param page
+ */
+let fnPage = (page) => {
+    const url = `?page=${page}`;
+    fnLocationHref(url);
+};
 /**
  * Ckeditor5 기본셋팅
  * @param target ('#eidtor')와 같은형태로 id값 필요

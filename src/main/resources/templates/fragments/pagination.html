@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ko" th:fragment="layout (pagination)" xmlns:th="http://www.thymeleaf.org">
+    <div class="btn-group me-2" role="group" aria-label="First group" th:object="${pagination}">
+        <button type="button" class="btn btn-secondary"
+                th:if="${pagination.hasPreviousPage}"
+                th:onclick="fnPage([[${pagination.pageNum - 1}]])">이전
+        </button>
+        <th:block th:each="page : ${#numbers.sequence(pagination.startPage, pagination.endPage)}" >
+            <button type="button" class="btn btn-secondary"
+                    th:onclick="fnPage([[${page - 1}]])">
+                <span th:class="${page == pagination.currentPage} ? 'field-active'">[[${page}]]</span>
+            </button>
+        </th:block>
+        <button type="button" class="btn btn-secondary"
+                th:if="${pagination.hasNextPage}"
+                th:onclick="fnPage([[${pagination.pageNum + 1}]])">다음</button>
+    </div>
+</html>

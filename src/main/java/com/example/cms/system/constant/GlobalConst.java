@@ -62,7 +62,7 @@ public class GlobalConst {
     /**
      * 현재 메뉴 정보 - AuthInterceptor 에서 생성
      */
-    public static final String CURRENT_MENU       = "currentMenu";
+    public static final String CURRENT_MENU       = "CURRENT_MENU";
 
 
 }

@@ -3,10 +3,12 @@ package com.example.cms.web.controller.notice;
 import com.example.cms.domain.notice.entity.Notice;
 import com.example.cms.domain.notice.service.NoticeService;
 import com.example.cms.system.util.MessageUtil;
+import com.example.cms.web.controller.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +26,7 @@ import java.util.List;
 public class NoticeController {
 
     private final NoticeService noticeService;
+    private final Pagination page;
     private final MessageUtil messageUtil;
 
     /**
@@ -32,10 +35,12 @@ public class NoticeController {
      * @return
      */
     @GetMapping("/board/notice")
-    public String menuList(Model model, Pageable pageable) {
-        Page<Notice> noticeList = noticeService.findAll(pageable);
-        List<Notice> list = noticeList.getContent();
-        model.addAttribute("noticeList", list);
+    public String menuList(Model model,@PageableDefault(size = 10) Pageable pageable) {
+        Page<NoticeDTO> noticeList = noticeService.findAll(pageable);
+
+        Pagination pagination = page.setPagination(noticeList, 10);
+        model.addAttribute("noticeList", noticeList.getContent());
+        model.addAttribute("pagination", pagination);
         return "/notice/list";
     }
 
@@ -53,6 +58,12 @@ public class NoticeController {
     }
 
 
+    /**
+     * 공지사항 수정
+     * @param noticeForm
+     * @param bindingResult
+     * @return
+     */
     @PostMapping("/board/notice/edit")
     public String noticeEdit(@Valid @ModelAttribute("notice") NoticeForm noticeForm
             , BindingResult bindingResult) {
@@ -81,6 +92,13 @@ public class NoticeController {
     public String noticeCreateForm(@ModelAttribute("notice")NoticeForm noticeForm) {
         return "/notice/register";
     }
+
+    /**
+     * 공지사항 등록
+     * @param noticeForm
+     * @param bindingResult
+     * @return
+     */
     @PostMapping("/board/notice/register")
     public String noticeRegister(@Valid @ModelAttribute("notice")NoticeForm noticeForm
             , BindingResult bindingResult) {

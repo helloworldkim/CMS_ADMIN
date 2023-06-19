@@ -9,6 +9,7 @@
     --base-color-red: #e43e00;
     --base-color-orange: #f89600;
     --base-color-gray: #a4a4a4;
+    --base-color-black: #000000;
 
     --header-first-color: #402E32;
     --header-first-hover-color: #baa89b;
@@ -182,5 +183,11 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 .field-error {
     border-color: var(--error-color);
     color: var(--error-color);
+    width: 100%;
+}
+
+.field-active {
+    border-color: var(--base-color-black);
+    color: var(--base-color-black);
     width: 100%;
 }

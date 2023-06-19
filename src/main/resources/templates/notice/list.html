@@ -25,7 +25,7 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h1 class="h3 mb-3"><strong>공지사항</strong> 리스트</h1>
+                    <h1 class="h3 mb-3"><strong th:text="${CURRENT_MENU.name}"/>리스트</h1>
                     <button class="btn btn-primary" onclick="fnRegist()">등록</button>
                 </div>
             </div>
@@ -44,7 +44,6 @@
                     <tbody>
 
                         <th:block th:each="list : ${noticeList}">
-                            <!-- 하위메뉴 시작 -->
                             <tr th:onclick="fnDetail([[${list.id}]])">
                                 <td th:text="${list.id}">번호</td>
                                 <td th:text="${list.title}">제목</td>
@@ -53,11 +52,14 @@
                                 <td th:text="${list.lastModifiedBy}">수정자</td>
                                 <td th:text="${#temporals.format(list.lastModifiedDate, 'yyyy-MM-dd')}">수정일시</td>
                             </tr>
-                            <!-- 하위메뉴 종료 -->
                         </th:block>
                     </tbody>
                 </table>
-
+                <!-- Pagination 시작-->
+                <div class="btn-toolbar mb-4 d-flex justify-content-center" role="toolbar" aria-label="Toolbar with button groups">
+                    <div th:replace="~{fragments/pagination :: layout (${pagination})}"></div>
+                </div>
+                <!-- Pagination 종료-->
             </div>
         </div>
     </main>

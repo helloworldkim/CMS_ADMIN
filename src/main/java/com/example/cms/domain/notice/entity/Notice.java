@@ -1,6 +1,7 @@
 package com.example.cms.domain.notice.entity;
 
 import com.example.cms.domain.common.BaseEntity;
+import com.example.cms.web.controller.notice.NoticeDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -25,6 +26,21 @@ public class Notice extends BaseEntity {
         this.id = id;
         this.title = Objects.requireNonNull(title);
         this.content = content;
+    }
+
+    //================================================================
+    // DTO변환
+    //================================================================
+    public NoticeDTO toDTO() {
+        return NoticeDTO.builder()
+                .id(this.id)
+                .title(this.title)
+                .content(this.content)
+                .createdBy(this.getCreatedBy())
+                .createdDate(this.getCreatedDate())
+                .lastModifiedBy(this.getLastModifiedBy())
+                .lastModifiedDate(this.getLastModifiedDate())
+                .build();
     }
 
 
