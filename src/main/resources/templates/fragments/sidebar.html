@@ -12,7 +12,7 @@
                         <li class="sidebar-header" th:text="${mainMenu.name}"></li>
 
                         <th:block th:each="subMenu : ${session.get(@globalConst.SESSION_LOGIN_INFO).subMenuMap[mainMenu.menuId]}">
-                            <li class="sidebar-item">
+                            <li class="sidebar-item" th:classappend="${CURRENT_MENU.menuId == subMenu.menuId} ? 'active'">
                                 <a class="sidebar-link" th:href="@{${subMenu.url}}">
                                     <span class="align-middle" th:text="${subMenu.name}"></span>
                                 </a>
@@ -25,7 +25,7 @@
                         Pages
                     </li>
 
-                    <li class="sidebar-item active">
+                    <li class="sidebar-item">
                         <a class="sidebar-link" href="index.html">
                             <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
                         </a>
