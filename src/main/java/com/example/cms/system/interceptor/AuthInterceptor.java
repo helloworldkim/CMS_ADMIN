@@ -48,18 +48,16 @@ public class AuthInterceptor implements HandlerInterceptor {
             }
 
             // 로그인 여부 확인
-            AuthAdminDTO authAdminDTO = isLoggedIn();
-            if (authAdminDTO == null || StringUtils.isBlank(authAdminDTO.getAdminId())) {
+            if (!isLoggedIn()) {
                 log.debug("# ==> 미인증 계정 요청, 로그인 페이지로 이동 - /login?redirectURL={}", requestURI);
                 response.sendRedirect("/login?redirectURL=" + requestURI);
 
-                throw new AuthException("미인증 계정 요청");
+                throw new AuthException("미인증 요청");
             }
 
             // ========================================================================================================
             // 2. 관리자 인증은 필요하나 권한 체크가 필요 없는 URL -> 로그인 여부는 위에서 확인 완료
             // ========================================================================================================
-
             if (requestURI.equals("/") || isAdminPermitAuthUrl(requestURI)) {
                 log.debug("# ==> Admin Permit Auth Url 요청 - {}", requestURI);
                 // 권한이 있으면 - 현재 메뉴 정보를 request 에 담는다, front 에서 메뉴 상태 표시에 사용
@@ -71,6 +69,8 @@ public class AuthInterceptor implements HandlerInterceptor {
             // 3. 관리자 인증 및 권한 체크가 필요한 URL
             // ========================================================================================================
             log.debug("# ==> 관리자 인증 및 권한 체크가 필요한 Url 요청 - {}", requestURI);
+            AuthAdminDTO authAdminDTO = (AuthAdminDTO) getSessionAttribute(SESSION_LOGIN_INFO);
+            log.info("# ==> [로그인 정보] adminId={} , adminName={} , adminGroupId={}", authAdminDTO.getAdminId(), authAdminDTO.getAdminName(), authAdminDTO.getAdminGroupId());
             Map<String, AdminGroupMenuDTO> authMap = authAdminDTO.getAuthMap();
 
             if (authMap != null) {
@@ -176,13 +176,11 @@ public class AuthInterceptor implements HandlerInterceptor {
      *
      * @return 로그인 - true, 미로그인 - false
      */
-    private AuthAdminDTO isLoggedIn() {
+    private Boolean isLoggedIn() {
         if (getSessionAttribute(SESSION_LOGIN_INFO) != null) {
-            AuthAdminDTO authDTO = (AuthAdminDTO) getSessionAttribute(SESSION_LOGIN_INFO);
-            log.info("# ==> [로그인 정보] adminId={} , adminName={} , adminGroupId={}", authDTO.getAdminId(), authDTO.getAdminName(), authDTO.getAdminGroupId());
-            return authDTO;
+            return true;
         }
-        return null;
+        return false;
     }
 
     /**
