@@ -20,19 +20,21 @@ import javax.validation.Valid;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/board/notice")
 @Slf4j
 public class NoticeController {
 
     private final NoticeService noticeService;
     private final Pagination page;
     private final MessageUtil messageUtil;
+    private final String redirectUrl = "redirect:/board/notice";
 
     /**
      * 목록페이지
      * @param model
      * @return
      */
-    @GetMapping("/board/notice")
+    @GetMapping("")
     public String menuList(Model model,@PageableDefault(size = 10) Pageable pageable) {
         Page<NoticeDTO> noticeList = noticeService.findAll(pageable);
 
@@ -48,7 +50,7 @@ public class NoticeController {
      * @param id
      * @return
      */
-    @GetMapping("/board/notice/{id}")
+    @GetMapping("/{id}")
     public String noticeUpdateForm(Model model, @PathVariable Long id) {
         Notice notice = noticeService.findById(id).orElseThrow(() -> new IllegalArgumentException(messageUtil.getMessage("message.board.common.unknown.target")));
         model.addAttribute("notice", notice.toDTO());
@@ -62,7 +64,7 @@ public class NoticeController {
      * @param bindingResult
      * @return
      */
-    @PostMapping("/board/notice/edit")
+    @PostMapping("/edit")
     public String noticeEdit(@Valid @ModelAttribute("notice") NoticeForm noticeForm
             , BindingResult bindingResult) {
         log.debug("==> NoticeForm={}", noticeForm);
@@ -78,7 +80,7 @@ public class NoticeController {
                 .build();
         noticeService.save(notice);
 
-        return "redirect:" + "/board/notice";
+        return redirectUrl;
     }
 
     /**
@@ -86,7 +88,7 @@ public class NoticeController {
      * @param noticeForm
      * @return
      */
-    @GetMapping("/board/notice/register")
+    @GetMapping("/register")
     public String noticeCreateForm(@ModelAttribute("notice")NoticeForm noticeForm) {
         return "/notice/register";
     }
@@ -97,7 +99,7 @@ public class NoticeController {
      * @param bindingResult
      * @return
      */
-    @PostMapping("/board/notice/register")
+    @PostMapping("/register")
     public String noticeRegister(@Valid @ModelAttribute("notice")NoticeForm noticeForm
             , BindingResult bindingResult) {
         log.debug("==> NoticeForm={}", noticeForm);
@@ -112,7 +114,7 @@ public class NoticeController {
                 .build();
         noticeService.save(notice);
 
-        return "redirect:" + "/board/notice";
+        return redirectUrl;
     }
 
     /**
@@ -121,7 +123,7 @@ public class NoticeController {
      * @return
      */
     @ResponseBody
-    @DeleteMapping("/board/notice/{id}")
+    @DeleteMapping("/{id}")
     public BaseJsonVO deleteNotice(@PathVariable("id") Long id) {
         noticeService.deleteById(id);
 
