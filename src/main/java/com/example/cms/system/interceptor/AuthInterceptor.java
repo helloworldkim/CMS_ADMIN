@@ -3,25 +3,24 @@ package com.example.cms.system.interceptor;
 import com.example.cms.domain.admin.dto.AuthAdminDTO;
 import com.example.cms.domain.adminmenugroup.dto.AdminGroupMenuDTO;
 import com.example.cms.system.properties.ProjectProperties;
-import com.example.cms.system.util.HttpServletUtil;
 import com.example.cms.system.util.MessageUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.security.auth.message.AuthException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.example.cms.system.constant.GlobalConst.*;
+import static com.example.cms.system.util.HttpServletUtil.createSession;
+import static com.example.cms.system.util.HttpServletUtil.getSessionAttribute;
 
 @Component
 @RequiredArgsConstructor
@@ -34,12 +33,10 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("# ============================== AuthInterceptor [preHandle] ======================================");
-        HttpSession session = request.getSession();
         int depthCount = urlDepthCheck(request.getRequestURI(), "/");
         String requestURI = getRequestURIByDepth(request.getRequestURI(), depthCount);
-
-        // 계정 인증 객체
-        AuthAdminDTO authAdminDTO;
+        String contextPath = request.getContextPath();
+        String referer = request.getHeader("Referer");
 
         try {
             // ========================================================================================================
@@ -51,7 +48,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             }
 
             // 로그인 여부 확인
-            authAdminDTO = isLoggedIn(session);
+            AuthAdminDTO authAdminDTO = isLoggedIn();
             if (authAdminDTO == null || StringUtils.isBlank(authAdminDTO.getAdminId())) {
                 log.debug("# ==> 미인증 계정 요청, 로그인 페이지로 이동 - /login?redirectURL={}", requestURI);
                 response.sendRedirect("/login?redirectURL=" + requestURI);
@@ -62,8 +59,11 @@ public class AuthInterceptor implements HandlerInterceptor {
             // ========================================================================================================
             // 2. 관리자 인증은 필요하나 권한 체크가 필요 없는 URL -> 로그인 여부는 위에서 확인 완료
             // ========================================================================================================
+
             if (requestURI.equals("/") || isAdminPermitAuthUrl(requestURI)) {
                 log.debug("# ==> Admin Permit Auth Url 요청 - {}", requestURI);
+                // 권한이 있으면 - 현재 메뉴 정보를 request 에 담는다, front 에서 메뉴 상태 표시에 사용
+                request.setAttribute(CURRENT_MENU, AdminGroupMenuDTO.builder().build());
                 return true;
             }
 
@@ -71,16 +71,11 @@ public class AuthInterceptor implements HandlerInterceptor {
             // 3. 관리자 인증 및 권한 체크가 필요한 URL
             // ========================================================================================================
             log.debug("# ==> 관리자 인증 및 권한 체크가 필요한 Url 요청 - {}", requestURI);
-
-            String contextPath = request.getContextPath();
-            String referer = request.getHeader("Referer");
-
-            AdminGroupMenuDTO adminGroupMenuDTO;
             Map<String, AdminGroupMenuDTO> authMap = authAdminDTO.getAuthMap();
 
             if (authMap != null) {
                 //요청 주소의 접근 권한 확인
-                adminGroupMenuDTO = authMap.get(requestURI);
+                AdminGroupMenuDTO adminGroupMenuDTO = authMap.get(requestURI);
                 if (adminGroupMenuDTO == null) {
                     log.info("# ==> 없는 주소요청 requestURI : {} ", requestURI);
                     response.sendError(HttpServletResponse.SC_NOT_FOUND, "대상메뉴없음");
@@ -148,7 +143,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                                  HttpServletResponse response, AuthAdminDTO authAdminDTO) throws IOException {
 
         // 메세지 생성
-        HttpServletUtil.createSession(ALERT_MSG, messageUtil.getMessage("message.menu.access.denied"));
+        createSession(ALERT_MSG, messageUtil.getMessage("message.menu.access.denied"));
 
         // 이동 할 URL
         String redirectUrl = "";
@@ -179,18 +174,12 @@ public class AuthInterceptor implements HandlerInterceptor {
     /**
      * 세션 값으로 로그인 여부 확인
      *
-     * @param session 세션
      * @return 로그인 - true, 미로그인 - false
      */
-    private AuthAdminDTO isLoggedIn(HttpSession session) {
-        if (session != null && session.getAttribute(SESSION_LOGIN_INFO) != null) {
-            AuthAdminDTO authDTO = (AuthAdminDTO) session.getAttribute(SESSION_LOGIN_INFO);
-
+    private AuthAdminDTO isLoggedIn() {
+        if (getSessionAttribute(SESSION_LOGIN_INFO) != null) {
+            AuthAdminDTO authDTO = (AuthAdminDTO) getSessionAttribute(SESSION_LOGIN_INFO);
             log.info("# ==> [로그인 정보] adminId={} , adminName={} , adminGroupId={}", authDTO.getAdminId(), authDTO.getAdminName(), authDTO.getAdminGroupId());
-
-            // 로그인 id 를 MDC 에 저장
-            MDC.put(REQUEST_ACCESS_ID, authDTO.getAdminId());
-
             return authDTO;
         }
         return null;

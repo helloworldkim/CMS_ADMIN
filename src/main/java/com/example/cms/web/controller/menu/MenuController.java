@@ -1,9 +1,7 @@
 package com.example.cms.web.controller.menu;
 
-import com.example.cms.domain.menu.dto.MenuResDTO;
 import com.example.cms.domain.menu.entity.Menu;
 import com.example.cms.domain.menu.service.MenuService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
