@@ -2,7 +2,7 @@ package com.example.cms.web.controller.auth;
 
 import com.example.cms.domain.admin.dto.AuthAdminDTO;
 import com.example.cms.domain.admin.service.AdminLoginException;
-import com.example.cms.domain.admin.service.AdminService;
+import com.example.cms.domain.admin.service.AuthService;
 import com.example.cms.system.util.MessageUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ import static com.example.cms.system.util.HttpServletUtil.*;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
-    private final AdminService adminService;
+    private final AuthService authService;
     private final MessageUtil messageUtil;
 
     /**
@@ -45,26 +45,23 @@ public class AuthController {
                         BindingResult bindingResult,
                         @RequestParam(defaultValue = "/") String redirectURL) {
 
-
         log.debug("==> loginForm={}", loginForm);
         if (bindingResult.hasErrors()) {
             log.debug("==> bindingResult = {}", bindingResult);
             return "admin/loginForm";
         }
-        AuthAdminDTO authAdminDTO = null;
+
         try {
-            authAdminDTO = adminService.loginProcess(loginForm.getAdminId(), loginForm.getPassword());
+            AuthAdminDTO authAdminDTO = authService.loginProcess(loginForm.getAdminId(), loginForm.getPassword());
+            // ============================================================================================================
+            // 로그인 성공
+            // ============================================================================================================
+            createSession(SESSION_LOGIN_INFO, authAdminDTO);
         } catch (AdminLoginException e) {
             log.info("AdminLoginException e = {}", e.getMessage());
             bindingResult.reject("password", null, messageUtil.getMessage("message.auth.login.info-error"));
             return "admin/loginForm";
         }
-
-
-        // ============================================================================================================
-        // 로그인 성공
-        // ============================================================================================================
-        createSession(SESSION_LOGIN_INFO, authAdminDTO);
 
         return "redirect:" + redirectURL;
     }
@@ -74,7 +71,6 @@ public class AuthController {
      */
     @GetMapping("/logout")
     public String logout() {
-
         removeSession();
         return "redirect:/login";
     }

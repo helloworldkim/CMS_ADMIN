@@ -42,11 +42,6 @@ class NoticeServiceTest {
 
         //then
         Notice notice = noticeRepository.findById(id).get();
-        log.info("Notice : {}",notice.toString());
-        log.info("Notice : {}",notice.getCreatedDate());
-        log.info("Notice : {}",notice.getCreatedBy());
-        log.info("Notice : {}",notice.getLastModifiedDate());
-        log.info("Notice : {}",notice.getLastModifiedBy());
 
         Assertions.assertThat(entity).isEqualTo(notice);
         Assertions.assertThat(entity.getTitle()).isEqualTo(notice.getTitle());
@@ -70,6 +65,42 @@ class NoticeServiceTest {
         //then
         Assertions.assertThat(notice).isNotNull();
 
+    }
+
+    @Test
+    @DisplayName("공지사항 1건 삭제확인")
+    void deleteByIdTest() {
+        //given
+        Notice entity = Notice.builder()
+                .title("제목")
+                .content("내용")
+                .build();
+        Notice save = noticeRepository.save(entity);
+        Long id = save.getId();
+        em.flush();
+        //when
+        noticeService.deleteById(id);
+        //then
+        Assertions.assertThat(noticeRepository.findAll().size()).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("공지사항 1건 삭제 실패 확인")
+    void deleteByIdTestFailure() {
+        //given
+        Notice entity = Notice.builder()
+                .title("제목")
+                .content("내용")
+                .build();
+        Notice save = noticeRepository.save(entity);
+        Long id = save.getId();
+        em.flush();
+        //when
+        noticeService.deleteById(id);
+        em.flush();
+        //then
+
+        Assertions.assertThatThrownBy(() -> noticeService.deleteById(id)).isInstanceOf(IllegalStateException.class);
     }
 
 }
