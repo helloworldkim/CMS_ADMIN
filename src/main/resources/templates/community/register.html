@@ -13,9 +13,7 @@
         };
 
 
-        const list = "/board/notice";
-        const del = "/board/notice/";
-
+        const list = "/board/community";
         let fnList = () => {
             const url = list;
             fnLocationHref(url);
@@ -25,21 +23,6 @@
             frm.submit();
         };
 
-        let fnDelete = (targetNum) => {
-            alert("정말 삭제하시겠습니까?");
-            $.ajax({
-                type : "DELETE",
-                url : del + targetNum,
-                success: function (data) {
-                    console.log(data);
-                    window.location = list; // redirect
-                },
-                error: function (e) {
-                    console.log(e);
-                }
-            });
-
-        };
 
     </script>
 
@@ -51,20 +34,15 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h1 class="h3 mb-3"><strong th:text="${CURRENT_MENU.name}"></strong>상세</h1>
+                        <h1 class="h3 mb-3"><strong th:text="${CURRENT_MENU.name}"/>등록</h1>
                     </div>
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-primary m-lg-1" onclick="fnEdit()">수정</button>
-                        <button class="btn btn-primary m-lg-1" th:onclick="fnDelete([[${notice.id}]])">삭제</button>
+                        <button class="btn btn-primary m-lg-1" onclick="fnEdit()">등록</button>
                         <button class="btn btn-primary m-lg-1" onclick="fnList()">목록</button>
                     </div>
                 </div>
-                <form id="frm" method="post" action="/board/notice/edit">
-                    <div class="card-body" th:object="${notice}">
-                        <div class="mb-3">
-                            <label class="form-label">번호</label>
-                            <input type="text" class="form-control" th:field="*{id}" readonly>
-                        </div>
+                <form id="frm" method="post" action="/board/community/register">
+                    <div class="card-body" th:object="${community}">
                         <div class="mb-3">
                             <label class="form-label">제목</label>
                             <input type="text" class="form-control" th:field="*{title}">

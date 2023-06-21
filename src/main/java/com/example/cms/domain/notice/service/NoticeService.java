@@ -2,7 +2,7 @@ package com.example.cms.domain.notice.service;
 
 import com.example.cms.domain.notice.entity.Notice;
 import com.example.cms.domain.notice.repository.NoticeRepository;
-import com.example.cms.web.controller.notice.NoticeDTO;
+import com.example.cms.domain.notice.dto.NoticeDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

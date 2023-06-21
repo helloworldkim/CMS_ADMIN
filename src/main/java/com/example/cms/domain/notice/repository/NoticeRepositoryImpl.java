@@ -1,9 +1,6 @@
 package com.example.cms.domain.notice.repository;
 
-import com.example.cms.domain.notice.entity.Notice;
-import com.example.cms.domain.notice.entity.QNotice;
-import com.example.cms.web.controller.notice.NoticeDTO;
-import com.querydsl.core.types.Projections;
+import com.example.cms.domain.notice.dto.NoticeDTO;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

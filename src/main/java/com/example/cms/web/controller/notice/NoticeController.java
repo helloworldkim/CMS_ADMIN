@@ -1,8 +1,10 @@
 package com.example.cms.web.controller.notice;
 
+import com.example.cms.domain.notice.dto.NoticeDTO;
 import com.example.cms.domain.notice.entity.Notice;
 import com.example.cms.domain.notice.service.NoticeService;
 import com.example.cms.system.util.MessageUtil;
+import com.example.cms.web.controller.BaseJsonVO;
 import com.example.cms.web.controller.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,13 +14,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -52,8 +50,8 @@ public class NoticeController {
      */
     @GetMapping("/board/notice/{id}")
     public String noticeUpdateForm(Model model, @PathVariable Long id) {
-        Notice notice = noticeService.findById(id).orElseThrow(() -> new IllegalArgumentException(messageUtil.getMessage("message.board.notice.unknown.target")));
-        model.addAttribute("notice", notice);
+        Notice notice = noticeService.findById(id).orElseThrow(() -> new IllegalArgumentException(messageUtil.getMessage("message.board.common.unknown.target")));
+        model.addAttribute("notice", notice.toDTO());
         return "/notice/form";
     }
 
@@ -117,5 +115,19 @@ public class NoticeController {
         return "redirect:" + "/board/notice";
     }
 
+    /**
+     * 공지사항 삭제
+     * @param id
+     * @return
+     */
+    @ResponseBody
+    @DeleteMapping("/board/notice/{id}")
+    public BaseJsonVO deleteNotice(@PathVariable("id") Long id) {
+        noticeService.deleteById(id);
+
+        return BaseJsonVO.builder()
+                .data(null)
+                .build();
+    }
 
 }

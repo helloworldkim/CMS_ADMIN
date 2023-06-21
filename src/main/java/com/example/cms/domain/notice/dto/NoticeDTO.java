@@ -1,4 +1,4 @@
-package com.example.cms.web.controller.notice;
+package com.example.cms.domain.notice.dto;
 
 import lombok.*;
 

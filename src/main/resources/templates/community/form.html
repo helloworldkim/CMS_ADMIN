@@ -13,8 +13,8 @@
         };
 
 
-        const list = "/board/notice";
-        const del = "/board/notice/";
+        const list = "/board/community";
+        const del = "/board/community/";
 
         let fnList = () => {
             const url = list;
@@ -55,12 +55,12 @@
                     </div>
                     <div class="d-flex justify-content-end">
                         <button class="btn btn-primary m-lg-1" onclick="fnEdit()">수정</button>
-                        <button class="btn btn-primary m-lg-1" th:onclick="fnDelete([[${notice.id}]])">삭제</button>
+                        <button class="btn btn-primary m-lg-1" th:onclick="fnDelete([[${community.id}]])">삭제</button>
                         <button class="btn btn-primary m-lg-1" onclick="fnList()">목록</button>
                     </div>
                 </div>
-                <form id="frm" method="post" action="/board/notice/edit">
-                    <div class="card-body" th:object="${notice}">
+                <form id="frm" method="post" action="/board/community/edit">
+                    <div class="card-body" th:object="${community}">
                         <div class="mb-3">
                             <label class="form-label">번호</label>
                             <input type="text" class="form-control" th:field="*{id}" readonly>
