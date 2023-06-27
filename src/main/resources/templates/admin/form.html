@@ -17,7 +17,11 @@
         };
 
         let fnDelete = (adminId) => {
-            alert("정말 삭제하시겠습니까?");
+            let result = confirm("삭제하시겠습니까?");
+            /** 삭제 거부의 경우 프로세스 종료 */
+            if(!result){
+                return false;
+            }
             $.ajax({
                 type : "DELETE",
                 url : del + adminId,
