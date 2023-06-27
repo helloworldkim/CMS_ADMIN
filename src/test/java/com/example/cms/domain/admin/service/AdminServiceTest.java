@@ -7,6 +7,7 @@ import com.example.cms.domain.admingroup.entity.AdminGroup;
 import com.example.cms.domain.admingroup.repository.AdminGroupRepository;
 import com.example.cms.system.enums.AdminMainAccessType;
 import com.example.cms.system.enums.AdminRole;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -149,7 +150,7 @@ class AdminServiceTest {
         Page<AdminDTO> adminList = adminService.findAllWithPage(pageable);
 
         //then
-        assertThat(adminList.getContent().size()).isEqualTo(2);
+        Assertions.assertThat(adminList.getContent()).hasSize(2);
         assertThat(adminList.getTotalPages()).isEqualTo(1);
     }
 

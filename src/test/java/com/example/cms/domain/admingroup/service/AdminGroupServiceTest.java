@@ -3,6 +3,7 @@ package com.example.cms.domain.admingroup.service;
 import com.example.cms.domain.admingroup.entity.AdminGroup;
 import com.example.cms.domain.admingroup.repository.AdminGroupRepository;
 import com.example.cms.system.enums.AdminMainAccessType;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,7 +103,7 @@ class AdminGroupServiceTest {
         List<AdminGroup> list = adminGroupService.findAll();
 
         //then
-        assertThat(list.size()).isEqualTo(2);
+        Assertions.assertThat(list).hasSize(2);
     }
 
 }

@@ -81,7 +81,7 @@ class NoticeServiceTest {
         //when
         noticeService.deleteById(id);
         //then
-        Assertions.assertThat(noticeRepository.findAll().size()).isEqualTo(0);
+        Assertions.assertThat(noticeRepository.findAll()).hasSize(0);
     }
 
     @Test

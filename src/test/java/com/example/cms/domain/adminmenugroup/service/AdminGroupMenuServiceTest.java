@@ -8,6 +8,7 @@ import com.example.cms.domain.adminmenugroup.repository.AdminGroupMenuRepository
 import com.example.cms.domain.menu.entity.Menu;
 import com.example.cms.domain.menu.repository.MenuRepository;
 import com.example.cms.system.config.QueryDslConfig;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,8 +22,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
 @Import(QueryDslConfig.class)
@@ -84,7 +83,7 @@ class AdminGroupMenuServiceTest {
 
         //then
         List<AdminGroupMenu> findAdminGroupMenuList = adminGroupMenuRepository.findByAdminGroup(initAdminGroup);
-        assertThat(findAdminGroupMenuList.size()).isEqualTo(savedAdminGroupMenuList.size());
+        Assertions.assertThat(findAdminGroupMenuList).hasSize(savedAdminGroupMenuList.size());
 
     }
 
@@ -107,8 +106,8 @@ class AdminGroupMenuServiceTest {
 
         //then
         List<AdminGroupMenu> findAdminGroupMenuList = adminGroupMenuRepository.findByAdminGroup(initAdminGroup);
-        assertThat(findAdminGroupMenuList.get(0).isMenuAccess()).isTrue();
-        assertThat(findAdminGroupMenuList.get(1).isMenuAccess()).isTrue();
+        Assertions.assertThat(findAdminGroupMenuList.get(0).isMenuAccess()).isTrue();
+        Assertions.assertThat(findAdminGroupMenuList.get(1).isMenuAccess()).isTrue();
 
     }
 
