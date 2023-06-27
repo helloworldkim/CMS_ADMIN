@@ -1,5 +1,7 @@
 package com.example.cms.system.exception;
 
+import com.example.cms.domain.admingroup.service.AdminGroupInUseException;
+import com.example.cms.system.BaseJsonVO;
 import com.example.cms.system.util.MessageUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,13 +10,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.webjars.NotFoundException;
 
 import javax.naming.NoPermissionException;
 import javax.security.auth.message.AuthException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -29,17 +30,28 @@ public class ControllerExceptionAdvice {
     private final MessageUtil messageUtil;
 
     /**
+     * AdminGroup Error 처리
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(AdminGroupInUseException.class)
+    @ResponseBody
+    public BaseJsonVO adminGroupInUseExceptionHandler(AdminGroupInUseException e) {
+        log.error(e.getMessage());
+        return BaseJsonVO.builder()
+                .resultCode(HttpStatus.BAD_REQUEST.value())
+                .error(e.getMessage())
+                .build();
+    }
+
+    /**
      * 기본 Error처리.
-     *
-     * @param request
-     * @param response
      * @param e
      * @return
      * @throws IOException
      */
     @ExceptionHandler(Exception.class)
-    public ModelAndView exceptionHandler(HttpServletRequest request, HttpServletResponse response, Exception e)
-            throws IOException {
+    public ModelAndView exceptionHandler(Exception e) {
 
         HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AdminGroupDTO {
-    private Long id;
+    private Long adminGroupId;
     private String name;
     private String description;
     private AdminMainAccessType accessType;

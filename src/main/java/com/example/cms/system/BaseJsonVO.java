@@ -21,4 +21,6 @@ public class BaseJsonVO {
 
     /** 데이터 */
     private Object data;
+    /** 에러메시지 */
+    private String error;
 }

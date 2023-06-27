@@ -1,6 +1,7 @@
 package com.example.cms.domain.admin.repository;
 
 import com.example.cms.domain.admin.entity.Admin;
+import com.example.cms.domain.admingroup.entity.AdminGroup;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,4 +17,6 @@ public interface AdminRepository extends JpaRepository<Admin, Long>, AdminCustom
 
     @Query("SELECT a FROM Admin a join fetch a.adminGroup where a.adminId = :adminId and a.deleted = false")
     Optional<Admin> findByAdminIdActive(@Param("adminId")String adminId);
+
+    Optional<Admin> findByAdminGroup(AdminGroup adminGroup);
 }

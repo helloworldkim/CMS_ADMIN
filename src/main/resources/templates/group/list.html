@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/default :: layout(~{::section})}" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<section class="main">
+
+    <script th:inline="javascript">
+        const detail = "/system/group/";
+        const register = "/system/group/register";
+        const list = "/system/group";
+        let fnDetail = (targetNum) => {
+            const url = detail + targetNum;
+            fnLocationHref(url);
+
+        };
+        let fnRegist = () => {
+            const url = register;
+            fnLocationHref(url);
+        };
+
+    </script>
+
+    <!-- TOPBAR END -->
+    <nav th:replace="~{fragments/topbar :: fragment-topbar}"></nav>
+    <!-- TOPBAR END -->
+    <main class="content">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1 class="h3 mb-3"><strong th:text="${CURRENT_MENU.name}"/>리스트</h1>
+                    <button class="btn btn-primary" onclick="fnRegist()">등록</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">번호</th>
+                            <th scope="col">어드민그룹명</th>
+                            <th scope="col">상세설명</th>
+                            <th scope="col">등록자</th>
+                            <th scope="col">등록일시</th>
+                            <th scope="col">수정자</th>
+                            <th scope="col">일시</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <th:block th:each="list : ${adminGroupList}">
+                            <tr th:onclick="fnDetail([[${list.adminGroupId}]])">
+                                <td th:text="${list.adminGroupId}">번호</td>
+                                <td th:text="${list.name}">어드민그룹명</td>
+                                <td th:text="${list.description}">어드민그룹 상세설명</td>
+                                <td th:text="${list.createdBy}">등록자</td>
+                                <td th:text="${#temporals.format(list.createdDate, 'yyyy-MM-dd')}">등록일시</td>
+                                <td th:text="${list.lastModifiedBy}">수정자</td>
+                                <td th:text="${#temporals.format(list.lastModifiedDate, 'yyyy-MM-dd')}">수정일시</td>
+                            </tr>
+                        </th:block>
+                    </tbody>
+                </table>
+                <!-- Pagination 시작-->
+                <div class="btn-toolbar mb-4 d-flex justify-content-center" role="toolbar" aria-label="Toolbar with button groups"
+                th:if="${pagination.totalPages > 1}">
+                    <div th:replace="~{fragments/pagination :: layout (${pagination})}"></div>
+                </div>
+                <!-- Pagination 종료-->
+            </div>
+        </div>
+    </main>
+
+</section>
+
+</html>

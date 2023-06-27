@@ -1,8 +1,11 @@
 package com.example.cms.domain.admingroup.service;
 
+import com.example.cms.domain.admin.entity.Admin;
+import com.example.cms.domain.admin.repository.AdminRepository;
 import com.example.cms.domain.admingroup.entity.AdminGroup;
 import com.example.cms.domain.admingroup.repository.AdminGroupRepository;
 import com.example.cms.system.enums.AdminMainAccessType;
+import com.example.cms.system.enums.AdminRole;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -24,6 +29,8 @@ class AdminGroupServiceTest {
 
     @Autowired
     private AdminGroupRepository adminGroupRepository;
+    @Autowired
+    private AdminRepository adminRepository;
     @Autowired
     private AdminGroupService adminGroupService;
 
@@ -79,6 +86,31 @@ class AdminGroupServiceTest {
 
         //then
         assertThrows(NoSuchElementException.class, () -> adminGroupRepository.findById(adminGroupId).orElseThrow());
+
+    }
+    @Test
+    @DisplayName("어드민 그룹 삭제 실패 테스트")
+    void deleteFailure() {
+        //given
+        AdminGroup adminGroup = AdminGroup.builder()
+                .name("테스트 그룹")
+                .description("어드민그룹 기본셋팅")
+                .accessType(AdminMainAccessType.MAIN)
+                .build();
+        AdminGroup saveAdminGroup = adminGroupRepository.save(adminGroup);
+        Long adminGroupId = saveAdminGroup.getId();
+        Admin admin = Admin.builder()
+                .adminId("test1")
+                .adminGroup(saveAdminGroup)
+                .email("test1")
+                .password("test1")
+                .adminRole(AdminRole.ROLE_MASTER)
+                .adminName("test1")
+                .build();
+        adminRepository.save(admin);
+        //when
+        //then
+        assertThrows(AdminGroupInUseException.class, () -> adminGroupService.deleteById(adminGroupId));
 
     }
 

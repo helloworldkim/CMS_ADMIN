@@ -1,17 +1,8 @@
 <!DOCTYPE html>
 <html th:replace="~{layout/default :: layout(~{::section})}" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <section class="main">
-    <style>
-        .ck-editor__editable {
-            height: 50vh;
-        }
-    </style>
+
     <script th:inline="javascript">
-
-        window.onload = () => {
-            fnEditor("#editor");
-        };
-
 
         const list = "/system/admin";
         const del = "/system/admin/";

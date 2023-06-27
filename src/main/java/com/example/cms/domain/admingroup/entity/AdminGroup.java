@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Entity
@@ -33,7 +34,7 @@ public class AdminGroup extends BaseEntity {
 
     public AdminGroupDTO toDTO() {
         return AdminGroupDTO.builder()
-                .id(this.id)
+                .adminGroupId(this.id)
                 .name(this.name)
                 .description(this.description)
                 .createdBy(this.getCreatedBy())
@@ -43,4 +44,8 @@ public class AdminGroup extends BaseEntity {
                 .build();
     }
 
+    public void updateAdminGroup(String name, String description) {
+        this.name = Objects.requireNonNull(name);
+        this.description = Objects.requireNonNull(description);
+    }
 }
