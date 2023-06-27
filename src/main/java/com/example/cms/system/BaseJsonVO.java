@@ -1,4 +1,4 @@
-package com.example.cms.web.controller;
+package com.example.cms.system;
 
 import lombok.Builder;
 import lombok.Getter;

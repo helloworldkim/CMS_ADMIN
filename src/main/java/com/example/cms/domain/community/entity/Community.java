@@ -43,5 +43,11 @@ public class Community extends BaseEntity {
                 .build();
     }
 
-
+    //================================================================
+    // UPDATE처리
+    //================================================================
+    public void updateCommunity(String title, String content) {
+        this.title = Objects.requireNonNull(title);
+        this.content = content;
+    }
 }

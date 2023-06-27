@@ -4,8 +4,8 @@ import com.example.cms.domain.community.dto.CommunityDTO;
 import com.example.cms.domain.community.entity.Community;
 import com.example.cms.domain.community.service.CommunityService;
 import com.example.cms.system.util.MessageUtil;
-import com.example.cms.web.controller.BaseJsonVO;
-import com.example.cms.web.controller.Pagination;
+import com.example.cms.system.BaseJsonVO;
+import com.example.cms.system.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -35,7 +35,7 @@ public class CommunityController {
      * @return
      */
     @GetMapping("")
-    public String menuList(Model model,@PageableDefault(size = 10) Pageable pageable) {
+    public String communityList(Model model,@PageableDefault(size = 10) Pageable pageable) {
         Page<CommunityDTO> communityList = communityService.findAll(pageable);
 
         Pagination pagination = page.setPagination(communityList, 10);
@@ -59,7 +59,7 @@ public class CommunityController {
 
 
     /**
-     * 공지사항 수정
+     * 커뮤니티 수정
      * @param communityForm
      * @param bindingResult
      * @return
@@ -72,13 +72,7 @@ public class CommunityController {
             log.debug("==> bindingResult = {}", bindingResult);
             return "/community/form";
         }
-
-        Community community = Community.builder()
-                .id(communityForm.getId())
-                .title(communityForm.getTitle())
-                .content(communityForm.getContent())
-                .build();
-        communityService.save(community);
+        communityService.update(communityForm);
 
         return redirectUrl;
     }
@@ -94,7 +88,7 @@ public class CommunityController {
     }
 
     /**
-     * 공지사항 등록
+     * 커뮤니티 등록
      * @param communityForm
      * @param bindingResult
      * @return
@@ -118,7 +112,7 @@ public class CommunityController {
     }
 
     /**
-     * 공지사항 삭제
+     * 커뮤니티 글 삭제
      * @param id
      * @return
      */

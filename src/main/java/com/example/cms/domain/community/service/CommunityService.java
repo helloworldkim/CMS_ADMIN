@@ -4,6 +4,7 @@ import com.example.cms.domain.community.dto.CommunityDTO;
 import com.example.cms.domain.community.entity.Community;
 import com.example.cms.domain.community.repository.CommunityRepository;
 import com.example.cms.system.util.MessageUtil;
+import com.example.cms.web.controller.community.CommunityForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,12 @@ public class CommunityService {
     @Transactional
     public Long save(Community community) {
         return communityRepository.save(community).getId();
+    }
+
+    @Transactional
+    public void update(CommunityForm communityForm) {
+        Community community = communityRepository.findById(communityForm.getId()).orElseThrow(() -> new IllegalStateException(messageUtil.getMessage("message.board.common.unknown.target")));
+        community.updateCommunity(communityForm.getTitle(), communityForm.getContent());
     }
 
 

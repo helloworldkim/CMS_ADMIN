@@ -1,5 +1,6 @@
 package com.example.cms.domain.admingroup.entity;
 
+import com.example.cms.domain.admingroup.dto.AdminGroupDTO;
 import com.example.cms.system.enums.AdminMainAccessType;
 import com.example.cms.domain.common.BaseEntity;
 import lombok.AccessLevel;
@@ -28,6 +29,18 @@ public class AdminGroup extends BaseEntity {
         this.name = name;
         this.description = description;
         this.accessType = accessType;
+    }
+
+    public AdminGroupDTO toDTO() {
+        return AdminGroupDTO.builder()
+                .id(this.id)
+                .name(this.name)
+                .description(this.description)
+                .createdBy(this.getCreatedBy())
+                .createdDate(this.getCreatedDate())
+                .lastModifiedBy(this.getLastModifiedBy())
+                .lastModifiedDate(this.getLastModifiedDate())
+                .build();
     }
 
 }

@@ -1,9 +1,9 @@
 package com.example.cms.system.exception;
 
-import com.example.cms.system.constant.GlobalConst;
+import com.example.cms.system.util.MessageUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.TypeMismatchException;
-import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,7 +23,10 @@ import java.util.Map;
 
 @Slf4j
 @ControllerAdvice
+@RequiredArgsConstructor
 public class ControllerExceptionAdvice {
+
+    private final MessageUtil messageUtil;
 
     /**
      * 기본 Error처리.
@@ -57,8 +60,9 @@ public class ControllerExceptionAdvice {
             httpStatus = HttpStatus.FORBIDDEN;
 
         }
+        log.error(e.getMessage());
 
-        Map<String, String> resultMap = getDefaultErrorResultMap(httpStatus, e.getMessage());
+        Map<String, String> resultMap = getDefaultErrorResultMap(httpStatus, messageUtil.getMessage("message.common.error") );
         return new ModelAndView("error", resultMap);
     }
 

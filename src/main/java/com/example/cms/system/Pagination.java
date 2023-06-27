@@ -1,4 +1,4 @@
-package com.example.cms.web.controller;
+package com.example.cms.system;
 
 import lombok.*;
 import org.springframework.data.domain.Page;

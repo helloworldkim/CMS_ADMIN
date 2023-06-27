@@ -43,5 +43,11 @@ public class Notice extends BaseEntity {
                 .build();
     }
 
-
+    //================================================================
+    // UPDATE
+    //================================================================
+    public void update(String title, String content) {
+        this.title = Objects.requireNonNull(title);
+        this.content = content;
+    }
 }

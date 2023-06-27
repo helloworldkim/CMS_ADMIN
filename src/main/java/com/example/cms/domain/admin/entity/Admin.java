@@ -1,5 +1,6 @@
 package com.example.cms.domain.admin.entity;
 
+import com.example.cms.domain.admin.dto.AdminDTO;
 import com.example.cms.domain.admingroup.entity.AdminGroup;
 import com.example.cms.domain.admin.dto.AuthAdminDTO;
 import com.example.cms.domain.common.BaseEntity;
@@ -8,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -53,7 +55,6 @@ public class Admin extends BaseEntity {
     }
     public void encodePassword(String encodePassword) {
         this.password = password;
-
     }
 
     public AuthAdminDTO toAuthAdminDTO() {
@@ -67,4 +68,34 @@ public class Admin extends BaseEntity {
                 .homeUrl("/")
                 .build();
     }
+    public AdminDTO AdminDTO() {
+        return AdminDTO.builder()
+                .adminId(adminId)
+                .adminRole(adminRole)
+                .adminGroup(adminGroup)
+                .adminName(adminName)
+                .email(email)
+                .build();
+    }
+
+    private void updateWithPassword(String password, AdminRole adminRole, AdminGroup adminGroup, String adminName, String email) {
+        this.password = Objects.requireNonNull(password);
+        this.adminRole = Objects.requireNonNull(adminRole);
+        this.adminGroup = Objects.requireNonNull(adminGroup);
+        this.adminName = Objects.requireNonNull(adminName);
+        this.email = Objects.requireNonNull(email);
+    }
+    public void update(String password, AdminRole adminRole, AdminGroup adminGroup, String adminName, String email) {
+        if (password.isBlank()) {
+            this.adminRole = Objects.requireNonNull(adminRole);
+            this.adminGroup = Objects.requireNonNull(adminGroup);
+            this.adminName = Objects.requireNonNull(adminName);
+            this.email = Objects.requireNonNull(email);
+        } else {
+            this.updateWithPassword(password, adminRole, adminGroup, adminName, email);
+        }
+    }
+
+
+
 }

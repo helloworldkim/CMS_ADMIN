@@ -1,8 +1,11 @@
 package com.example.cms.domain.admingroup.service;
 
+import com.example.cms.domain.admingroup.dto.AdminGroupDTO;
 import com.example.cms.domain.admingroup.entity.AdminGroup;
 import com.example.cms.domain.admingroup.repository.AdminGroupRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,5 +35,9 @@ public class AdminGroupService {
 
     public List<AdminGroup> findAll() {
         return adminGroupRepository.findAll();
+    }
+
+    public Page<AdminGroupDTO> findAdminGroupList(Pageable pageable) {
+        return adminGroupRepository.findAdminGroupList(pageable);
     }
 }

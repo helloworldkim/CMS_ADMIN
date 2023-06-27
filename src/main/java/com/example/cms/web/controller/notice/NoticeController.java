@@ -4,8 +4,8 @@ import com.example.cms.domain.notice.dto.NoticeDTO;
 import com.example.cms.domain.notice.entity.Notice;
 import com.example.cms.domain.notice.service.NoticeService;
 import com.example.cms.system.util.MessageUtil;
-import com.example.cms.web.controller.BaseJsonVO;
-import com.example.cms.web.controller.Pagination;
+import com.example.cms.system.BaseJsonVO;
+import com.example.cms.system.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -73,12 +73,7 @@ public class NoticeController {
             return "/notice/form";
         }
 
-        Notice notice = Notice.builder()
-                .id(noticeForm.getId())
-                .title(noticeForm.getTitle())
-                .content(noticeForm.getContent())
-                .build();
-        noticeService.save(notice);
+        noticeService.update(noticeForm);
 
         return redirectUrl;
     }

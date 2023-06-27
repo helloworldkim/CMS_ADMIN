@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/default :: layout(~{::section})}" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<section class="main">
+    <style>
+        .ck-editor__editable {
+            height: 50vh;
+        }
+    </style>
+    <script th:inline="javascript">
+
+        window.onload = () => {
+            fnEditor("#editor");
+        };
+
+
+        const list = "/system/admin";
+        const del = "/system/admin/";
+
+        let fnList = () => {
+            const url = list;
+            fnLocationHref(url);
+        };
+        let fnEdit = () => {
+            let frm = document.getElementById("frm");
+            frm.submit();
+        };
+
+        let fnDelete = (adminId) => {
+            alert("정말 삭제하시겠습니까?");
+            $.ajax({
+                type : "DELETE",
+                url : del + adminId,
+                success: function (data) {
+                    console.log(data);
+                    window.location = list; // redirect
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+
+        };
+
+    </script>
+
+    <!-- TOPBAR END -->
+    <nav th:replace="~{fragments/topbar :: fragment-topbar}"></nav>
+    <!-- TOPBAR END -->
+
+    <main class="content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h1 class="h3 mb-3"><strong th:text="${CURRENT_MENU.name}"></strong>상세</h1>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary m-lg-1" onclick="fnEdit()">수정</button>
+                        <button class="btn btn-primary m-lg-1" th:onclick="fnDelete([[${admin.adminId}]])">삭제</button>
+                        <button class="btn btn-primary m-lg-1" onclick="fnList()">목록</button>
+                    </div>
+                </div>
+                <form id="frm" method="post" action="/system/admin/edit">
+                    <div class="card-body" th:object="${admin}">
+                        <div class="mb-3">
+                            <label class="form-label">아이디</label>
+                            <input type="text" class="form-control" th:field="*{adminId}" readonly>
+                        </div>
+                        <div class="field-error pl20" th:errors="*{adminId}"></div>
+                        <div class="mb-3">
+                            <label class="form-label">비밀번호</label>
+                            <input type="password" class="form-control" name="password">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">어드민권한</label>
+                            <select th:field="*{adminRole}">
+                                <option value="">선택하세요</option>
+                                <th:block th:each="role : ${adminRoles}">
+                                    <option th:value="${role.name()}" th:text="${role.displayName}"></option>
+                                </th:block>
+                            </select>
+                        </div>
+                        <div class="field-error pl20" th:errors="*{adminRole}"></div>
+                        <div class="mb-3">
+                            <label class="form-label">어드민그룹</label>
+                            <select id="adminGroupId" name="adminGroupId">
+                                <option value="">선택하세요</option>
+                                <th:block th:each="adminGroup : ${adminGroupList}">
+                                    <option th:value="${adminGroup.id}" th:text="${adminGroup.name}"
+                                            th:selected="${admin.adminGroup.id == adminGroup.id}"></option>
+                                </th:block>
+                            </select>
+                        </div>
+                        <div class="field-error pl20" th:errors="*{adminGroup}"></div>
+                        <div class="mb-3">
+                            <label class="form-label">어드민이름</label>
+                            <input type="text" class="form-control" th:field="*{adminName}">
+                        </div>
+                        <div class="field-error pl20" th:errors="*{adminName}"></div>
+                        <div class="mb-3">
+                            <label class="form-label">이메일</label>
+                            <input type="email" class="form-control" th:field="*{email}">
+                        </div>
+                        <div class="field-error pl20" th:errors="*{email}"></div>
+                    </div>
+                </form>
+            </div>
+    </main>
+
+</section>
+
+</html>

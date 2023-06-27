@@ -9,8 +9,11 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface AdminRepository extends JpaRepository<Admin, Long> {
+public interface AdminRepository extends JpaRepository<Admin, Long>, AdminCustomRepository {
 
     @Query("SELECT a FROM Admin a join fetch a.adminGroup where a.adminId = :adminId")
     Optional<Admin> findByAdminId(@Param("adminId")String adminId);
+
+    @Query("SELECT a FROM Admin a join fetch a.adminGroup where a.adminId = :adminId and a.deleted = false")
+    Optional<Admin> findByAdminIdActive(@Param("adminId")String adminId);
 }

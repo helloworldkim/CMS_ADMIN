@@ -1,5 +1,6 @@
 package com.example.cms.domain.admin.service;
 
+import com.example.cms.domain.admin.dto.AdminDTO;
 import com.example.cms.domain.admin.entity.Admin;
 import com.example.cms.domain.admin.repository.AdminRepository;
 import com.example.cms.domain.admingroup.entity.AdminGroup;
@@ -76,7 +77,7 @@ class AdminServiceTest {
                 .build();
         Long id = adminService.save(admin);
         //when
-        adminService.delete(admin);
+        adminService.deleteByAdminId(admin.getAdminId());
         Admin findAdmin = adminRepository.findById(id).orElseThrow();
         //then
         assertThat(findAdmin.isDeleted()).isTrue();
@@ -145,7 +146,7 @@ class AdminServiceTest {
 
         //when
         PageRequest pageable = PageRequest.of(0,2); //0,2건
-        Page<Admin> adminList = adminService.findAllWithPage(pageable);
+        Page<AdminDTO> adminList = adminService.findAllWithPage(pageable);
 
         //then
         assertThat(adminList.getContent().size()).isEqualTo(2);

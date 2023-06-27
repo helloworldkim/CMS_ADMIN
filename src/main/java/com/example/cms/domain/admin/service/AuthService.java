@@ -40,7 +40,7 @@ public class AuthService {
      */
     public AuthAdminDTO loginProcess(String adminId, String password) {
 
-        Admin admin = adminRepository.findByAdminId(adminId)
+        Admin admin = adminRepository.findByAdminIdActive(adminId)
                 .orElseThrow(() -> new AdminLoginException(messageUtil.getMessage("message.auth.login.id")));
 
         if (!passwordEncoder.matches(password, admin.getPassword())) {
