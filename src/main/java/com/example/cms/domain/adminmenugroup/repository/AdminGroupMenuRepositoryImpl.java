@@ -15,7 +15,7 @@ public class AdminGroupMenuRepositoryImpl implements AdminGroupMenuCustomReposit
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<AdminGroupMenu> findAdminGroupMenuListWithQuerydsl(Long adminGroupId) {
+    public List<AdminGroupMenu> findAdminGroupMenuListByAdminGroupId(Long adminGroupId) {
 
         return queryFactory.select(adminGroupMenu)
                 .from(adminGroupMenu)

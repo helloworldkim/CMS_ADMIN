@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/default :: layout(~{::section})}" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<section class="main">
+
+    <script th:inline="javascript">
+
+        const list = "/system/group";
+        const del = "/system/group/";
+
+        let fnList = () => {
+            const url = list;
+            fnLocationHref(url);
+        };
+        let fnEdit = () => {
+            let frm = document.getElementById("frm");
+            frm.submit();
+        };
+
+        let fnDelete = (targetNum) => {
+            let result = confirm("삭제하시겠습니까?");
+            /** 삭제 거부의 경우 프로세스 종료 */
+            if(!result){
+                return false;
+            }
+            $.ajax({
+                type : "DELETE",
+                url : del + targetNum,
+                success: function (data) {
+                    if (data.error) {
+                        alert(data.error);
+                        return;
+                    }
+                    console.log(data);
+                    window.location = list; // redirect
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+
+        };
+
+    </script>
+
+    <!-- TOPBAR END -->
+    <nav th:replace="~{fragments/topbar :: fragment-topbar}"></nav>
+    <!-- TOPBAR END -->
+
+    <main class="content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h1 class="h3 mb-3"><strong th:text="${CURRENT_MENU.name}"></strong>상세</h1>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary m-lg-1" onclick="fnEdit()">수정</button>
+                        <button class="btn btn-primary m-lg-1" th:onclick="fnDelete([[${adminGroup.adminGroupId}]])">삭제</button>
+                        <button class="btn btn-primary m-lg-1" onclick="fnList()">목록</button>
+                    </div>
+                </div>
+                <form id="frm" method="post" action="/system/group/edit">
+                    <div class="card-body" th:object="${adminGroup}">
+                        <div class="mb-3">
+                            <label class="form-label">번호</label>
+                            <input type="text" class="form-control" th:field="*{adminGroupId}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">어드민그룹명</label>
+                            <input type="text" class="form-control" th:field="*{name}">
+                        </div>
+                        <div class="field-error pl20" th:errors="*{name}"></div>
+                        <div class="mb-3">
+                            <label class="form-label">어드민그룹 상세설명</label>
+                            <input type="text" class="form-control" th:field="*{description}">
+                        </div>
+                        <div class="field-error pl20" th:errors="*{description}"></div>
+                    </div>
+                </form>
+            </div>
+    </main>
+
+</section>
+
+</html>

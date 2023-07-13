@@ -81,8 +81,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND, "대상메뉴없음");
                     return false;
                 }
-                boolean menuAccess = adminGroupMenuDTO.menuAccess();
-                if (menuAccess) {
+                if (adminGroupMenuDTO.isMenuAccess()) {
                     // 권한이 있으면 - 현재 메뉴 정보를 request 에 담는다, front 에서 메뉴 상태 표시에 사용
                     request.setAttribute(CURRENT_MENU, adminGroupMenuDTO);
                     log.debug("# ==> 인증 성공");

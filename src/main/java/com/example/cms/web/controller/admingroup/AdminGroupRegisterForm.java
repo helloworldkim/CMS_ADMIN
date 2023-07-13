@@ -1,12 +1,8 @@
-package com.example.cms.web.controller.group;
+package com.example.cms.web.controller.admingroup;
 
 import lombok.*;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-
-import static com.example.cms.system.constant.RegexConst.PWD_REGEX;
 
 @Getter
 @Setter

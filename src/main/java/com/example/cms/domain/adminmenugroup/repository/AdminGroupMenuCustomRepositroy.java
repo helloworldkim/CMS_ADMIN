@@ -6,6 +6,6 @@ import java.util.List;
 
 
 public interface AdminGroupMenuCustomRepositroy {
-    List<AdminGroupMenu> findAdminGroupMenuListWithQuerydsl(Long id);
+    List<AdminGroupMenu> findAdminGroupMenuListByAdminGroupId(Long id);
 
 }

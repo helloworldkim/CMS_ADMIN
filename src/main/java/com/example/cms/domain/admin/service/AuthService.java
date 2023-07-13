@@ -64,7 +64,7 @@ public class AuthService {
 
         Long adminGroupId = admin.getAdminGroup().getId();
         // 어드민 그룹 별 접속 가능한 전체 메뉴 목록을 가져 온다
-        List<AdminGroupMenu> adminGroupAccessMenuList = adminGroupMenuRepository.findAdminGroupMenuListWithQuerydsl(adminGroupId);
+        List<AdminGroupMenu> adminGroupAccessMenuList = adminGroupMenuRepository.findAdminGroupMenuListByAdminGroupId(adminGroupId);
 
         log.trace("==> accessMenuList={}", adminGroupAccessMenuList);
 

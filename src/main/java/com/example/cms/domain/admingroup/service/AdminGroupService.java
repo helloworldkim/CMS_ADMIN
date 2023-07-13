@@ -5,7 +5,7 @@ import com.example.cms.domain.admingroup.dto.AdminGroupDTO;
 import com.example.cms.domain.admingroup.entity.AdminGroup;
 import com.example.cms.domain.admingroup.repository.AdminGroupRepository;
 import com.example.cms.system.util.MessageUtil;
-import com.example.cms.web.controller.group.AdminGroupForm;
+import com.example.cms.web.controller.admingroup.AdminGroupForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

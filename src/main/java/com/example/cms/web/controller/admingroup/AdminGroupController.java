@@ -1,4 +1,4 @@
-package com.example.cms.web.controller.group;
+package com.example.cms.web.controller.admingroup;
 
 import com.example.cms.domain.admingroup.dto.AdminGroupDTO;
 import com.example.cms.domain.admingroup.entity.AdminGroup;
@@ -72,7 +72,7 @@ public class AdminGroupController {
         log.debug("==> AdminGroupForm={}", adminGroupForm);
         if (bindingResult.hasErrors()) {
             log.debug("==> bindingResult = {}", bindingResult);
-            return "/admin/form";
+            return "/group/form";
         }
 
         adminGroupService.update(adminGroupForm);
