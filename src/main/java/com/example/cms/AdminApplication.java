@@ -10,21 +10,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
-@EnableJpaAuditing
 @EnableScheduling
 public class AdminApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AdminApplication.class, args);
-	}
-
-	@Bean
-	public RestTemplate restTemplate() {
-		return new RestTemplate();
-	}
-	@Bean
-	public LogTrace logTrace() {
-		return new ThreadLocalLogTrace();
 	}
 
 }
