@@ -17,7 +17,7 @@ class MessageSourceTest {
     MessageUtil messageUtil;
 
     @Test
-    @DisplayName("adminId message 테스트")
+    @DisplayName("messages를 제대로 읽어오는지 확인한다.(message.auth.login.id)")
     void messages_test_id() {
         String message = messageUtil.getMessage("message.auth.login.id");
         System.out.println("==> message = " + message);
@@ -26,7 +26,7 @@ class MessageSourceTest {
     }
 
     @Test
-    @DisplayName("password message 테스트")
+    @DisplayName("messages를 제대로 읽어오는지 확인한다.(message.auth.login.password)")
     void messages_test_password() {
         String message = messageUtil.getMessage("message.auth.login.password");
         System.out.println("==> message = " + message);

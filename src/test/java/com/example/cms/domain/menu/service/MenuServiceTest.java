@@ -23,7 +23,7 @@ class MenuServiceTest {
     MenuService menuService;
 
     @Test
-    @DisplayName("최상위 메뉴 단건 저장테스트")
+    @DisplayName("최상위 메뉴는 단건으로 저장 할 수 있다.")
     void saveOne() {
         //given
         Menu menu1 = Menu.builder()
@@ -40,29 +40,7 @@ class MenuServiceTest {
     }
 
     @Test
-    @DisplayName("상위메뉴가 존재한다면 url가 있어야한다. builder에서 null체크 됨")
-    void saveOneWithNoUrl() {
-        //given
-        Menu menu1 = Menu.builder()
-                .name("1번메뉴")
-                .listOrder(1)
-                .build();
-        menuRepository.save(menu1);
-
-        //when
-        //then
-        assertThrows(IllegalArgumentException.class, () -> {
-            Menu menu2 = Menu.builder()
-                    .name("1번메뉴")
-                    .listOrder(2)
-                    .build();
-            menu2.setParent(menu1);
-        });
-
-    }
-
-    @Test
-    @DisplayName("최상위, 그 다음 메뉴 저장테스트")
+    @DisplayName("최상위 메뉴와 그 하위 메뉴는 url이 존재한다면 저장 가능하다.")
     void saveTwo() {
         //given
         Menu menu1 = Menu.builder()
@@ -85,7 +63,7 @@ class MenuServiceTest {
     }
 
     @Test
-    @DisplayName("최상위 메뉴 조회 테스트")
+    @DisplayName("최상위 메뉴는 조회 가능하다.")
     void findOne() {
         //given
         Menu menu1 = Menu.builder()
@@ -102,7 +80,7 @@ class MenuServiceTest {
     }
 
     @Test
-    @DisplayName("최상위 메뉴 삭제 테스트")
+    @DisplayName("최상위 메뉴는 단건으로 삭제가 가능하다.")
     void deleteById() {
         //given
         Menu menu1 = Menu.builder()

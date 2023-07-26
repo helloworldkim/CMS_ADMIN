@@ -44,7 +44,7 @@ class AbandonmentPublicServiceBatchTest {
     private final String SERVICE_KEY = "?serviceKey=BKC8cVQJZmzbzk760iM8pPU0%2B%2FMG35Y95n3SBqKnMgCEob9unhBApWNHXrC1qvgoM0vh3CvuWxWZdeyzF1PVNA%3D%3D";
 
     @Test
-    @DisplayName("시도 조회 및 insert 테스트")
+    @DisplayName("공공데이터 유기동물 시도 조회 및 insert 테스트")
     void sidoInertTest() throws Exception {
 
         String endpoint = "/sido";
@@ -73,7 +73,7 @@ class AbandonmentPublicServiceBatchTest {
     }
 
     @Test
-    @DisplayName("시군구 조회 및 insert 테스트")
+    @DisplayName("공공데이터 유기동물 시군구 조회 DB에 저장이 가능하다.")
     void sigunguInertTest() throws Exception {
 
         //임시 시도코드 데이터
@@ -102,7 +102,7 @@ class AbandonmentPublicServiceBatchTest {
     }
 
     @Test
-    @DisplayName("보호소 조회 및 insert 테스트")
+    @DisplayName("공공데이터 유기동물 보호소 조회 DB에 저장이 가능하다.")
     void shelterInertTest() throws Exception {
 
         String uprCd = "6110000"; //시도코드
@@ -134,7 +134,7 @@ class AbandonmentPublicServiceBatchTest {
     }
 
     @Test
-    @DisplayName("품종 조회 insert 테스트")
+    @DisplayName("공공데이터 유기동물 품종 조회 DB에 저장이 가능하다.")
     void animalKindList() throws Exception {
 
         //임시 시도코드 데이터 개, 고양이, 기타

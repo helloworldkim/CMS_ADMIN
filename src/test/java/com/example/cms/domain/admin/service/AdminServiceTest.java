@@ -49,7 +49,7 @@ class AdminServiceTest {
     }
 
     @Test
-    @DisplayName("회원등록 테스트")
+    @DisplayName("회원등록은 어드민 그룹이 있다면 저장가능하다.")
     void adminSave() {
         //given
         Admin admin = Admin.builder()
@@ -66,7 +66,7 @@ class AdminServiceTest {
         assertThat(admin).isEqualTo(savedAdmin);
     }
     @Test
-    @DisplayName("회원삭제 테스트")
+    @DisplayName("어드민은 단건 삭제가 가능하다.")
     void adminDelete() {
         //given
         Admin admin = Admin.builder()
@@ -85,7 +85,7 @@ class AdminServiceTest {
 
     }
     @Test
-    @DisplayName("회원 pk로 단건 조회 테스트")
+    @DisplayName("어드민은 고유값으로 단건 조회가 가능하다.")
     void adminFindById() {
         //given
         Admin admin = Admin.builder()
@@ -105,7 +105,7 @@ class AdminServiceTest {
 
     }
     @Test
-    @DisplayName("회원 아이디로 단건 조회 테스트")
+    @DisplayName("어드민은 아이디로 단건 조회가 가능하다.")
     void adminFindByAdminId() {
         //given
         Admin admin = Admin.builder()
@@ -124,7 +124,7 @@ class AdminServiceTest {
         assertThat(admin).isEqualTo(findAdmin);
     }
     @Test
-    @DisplayName("회원목록 조회 테스트")
+    @DisplayName("어드민 목록 여러건 조회가 가능하다.")
     void adminFindAll() {
         //given
         Admin admin1 = Admin.builder()

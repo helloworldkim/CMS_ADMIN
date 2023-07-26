@@ -35,7 +35,7 @@ class AdminGroupServiceTest {
     private AdminGroupService adminGroupService;
 
     @Test
-    @DisplayName("어드민 그룹 등록 테스트")
+    @DisplayName("어드민 그룹 등록이 가능하다.")
     void save() {
         //given
         AdminGroup adminGroup = AdminGroup.builder()
@@ -53,7 +53,7 @@ class AdminGroupServiceTest {
     }
 
     @Test
-    @DisplayName("어드민 그룹 단건 조회 테스트")
+    @DisplayName("어드민 그룹 단건 조회가 가능하다.")
     void findById() {
         //given
         AdminGroup adminGroup = AdminGroup.builder()
@@ -71,7 +71,7 @@ class AdminGroupServiceTest {
     }
 
     @Test
-    @DisplayName("어드민 그룹 삭제 테스트")
+    @DisplayName("어드민 그룹 단건 삭제가 가능하다.")
     void delete() {
         //given
         AdminGroup adminGroup = AdminGroup.builder()
@@ -89,7 +89,7 @@ class AdminGroupServiceTest {
 
     }
     @Test
-    @DisplayName("어드민 그룹 삭제 실패 테스트")
+    @DisplayName("현재 어드민에서 사용중인 그룹이라면 어드민 그룹 삭제가 불가능하다.")
     void deleteFailure() {
         //given
         AdminGroup adminGroup = AdminGroup.builder()
@@ -115,7 +115,7 @@ class AdminGroupServiceTest {
     }
 
     @Test
-    @DisplayName("어드민 그룹 목록 조회 테스트")
+    @DisplayName("어드민 그룹 목록 여러건 조회가 가능하다.")
     void findAll() {
         //given
         AdminGroup adminGroup1 = AdminGroup.builder()

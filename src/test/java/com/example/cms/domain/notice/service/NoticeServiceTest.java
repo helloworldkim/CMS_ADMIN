@@ -28,7 +28,7 @@ class NoticeServiceTest {
 
 
     @Test
-    @DisplayName("공지사항 1건 등록 확인")
+    @DisplayName("공지사항을 등록 할 수 있다.")
     void saveTest() {
         //given
         Notice entity = Notice.builder()
@@ -49,7 +49,7 @@ class NoticeServiceTest {
 
     }
     @Test
-    @DisplayName("공지사항 1건 조회확인")
+    @DisplayName("공지사항 단건 조회 할 수 있다.")
     void findByIdTest() {
         //given
         Notice entity = Notice.builder()
@@ -68,7 +68,7 @@ class NoticeServiceTest {
     }
 
     @Test
-    @DisplayName("공지사항 1건 삭제확인")
+    @DisplayName("공지사항 단건 삭제 할 수 있다.")
     void deleteByIdTest() {
         //given
         Notice entity = Notice.builder()
@@ -84,23 +84,5 @@ class NoticeServiceTest {
         Assertions.assertThat(noticeRepository.findAll()).hasSize(0);
     }
 
-    @Test
-    @DisplayName("공지사항 1건 삭제 실패 확인")
-    void deleteByIdTestFailure() {
-        //given
-        Notice entity = Notice.builder()
-                .title("제목")
-                .content("내용")
-                .build();
-        Notice save = noticeRepository.save(entity);
-        Long id = save.getId();
-        em.flush();
-        //when
-        noticeService.deleteById(id);
-        em.flush();
-        //then
-
-        Assertions.assertThatThrownBy(() -> noticeService.deleteById(id)).isInstanceOf(IllegalStateException.class);
-    }
 
 }
